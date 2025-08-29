@@ -36,6 +36,11 @@ out/
 ### VS Code ###
 .vscode/
 
-### Env ###
+### Env & Local Config ###
 .env
+slow-mind-infra/.env
 application-local.yml
+application-local.properties
+
+### Local Data ###
+data/
