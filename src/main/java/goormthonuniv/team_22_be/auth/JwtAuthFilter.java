@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             try {
-                Claims claims = jwtProvider.parse(token); // 유효성/서명 검증 + 클레임 추출
+                Claims claims = jwtProvider.parse(token);
                 String subject = claims.getSubject();     // memberId
                 var authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
