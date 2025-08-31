@@ -76,4 +76,20 @@ public class Activity extends BaseTimeEntity {
         if(likes == null || likes == 0) return;
         likes--;
     }
+
+    /**
+     * 지금 시각 기준으로 신청 가능한지 여부를 반환
+     * - 모집 상태가 OPEN 이어야 함
+     * - 시작일이 있으면 now >= start
+     * - 마감일이 있으면 now <= end
+     */
+    public boolean isApplyOpenNow(LocalDateTime now) {
+        if (this.recruitStatus != RecruitStatus.OPEN) return false;
+
+        boolean afterStart = (applyStartAt == null) || !now.isBefore(applyStartAt);
+        boolean beforeEnd  = (applyEndAt   == null) || !now.isAfter(applyEndAt);
+
+        return afterStart && beforeEnd;
+    }
+
 }
