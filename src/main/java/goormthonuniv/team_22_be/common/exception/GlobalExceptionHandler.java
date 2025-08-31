@@ -1,6 +1,6 @@
 package goormthonuniv.team_22_be.common.exception;
 
-import goormthonuniv.team_22_be.common.response.ApiResponse;
+import goormthonuniv.team_22_be.common.response.ApiResult;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         ErrorCode code = e.getErrorCode();
         return ResponseEntity
                 .status(code.getHttpStatus())
-                .body(ApiResponse.fail(code));
+                .body(ApiResult.fail(code));
     }
 
     // @Valid 검증 실패 시 발생하는 예외 처리
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException e) {
         return ResponseEntity
                 .status(ErrorCode.VALIDATION_ERROR.getHttpStatus())
-                .body(ApiResponse.fail(ErrorCode.VALIDATION_ERROR, e.getBindingResult().toString()));
+                .body(ApiResult.fail(ErrorCode.VALIDATION_ERROR, e.getBindingResult().toString()));
     }
 
     // @Validated(파라미터 유효성 검사)에서 발생하는 예외 처리
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleConstraint(ConstraintViolationException e) {
         return ResponseEntity
                 .status(ErrorCode.VALIDATION_ERROR.getHttpStatus())
-                .body(ApiResponse.fail(ErrorCode.VALIDATION_ERROR, e.getMessage()));
+                .body(ApiResult.fail(ErrorCode.VALIDATION_ERROR, e.getMessage()));
     }
 
     // JSON 파싱 실패 같은 요청 본문을 읽을 수 없는 경우 처리
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleNotReadable(HttpMessageNotReadableException e) {
         return ResponseEntity
                 .status(ErrorCode.BAD_REQUEST.getHttpStatus())
-                .body(ApiResponse.fail(ErrorCode.BAD_REQUEST, e.getMessage()));
+                .body(ApiResult.fail(ErrorCode.BAD_REQUEST, e.getMessage()));
     }
 
     // 지원하지 않는 HTTP 메서드로 요청했을 때 처리
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
         return ResponseEntity
                 .status(ErrorCode.METHOD_NOT_ALLOWED.getHttpStatus())
-                .body(ApiResponse.fail(ErrorCode.METHOD_NOT_ALLOWED, e.getMessage()));
+                .body(ApiResult.fail(ErrorCode.METHOD_NOT_ALLOWED, e.getMessage()));
     }
 
     // 위에서 지정하지 않은 모든 예외를 마지막으로 처리
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         // TODO: 필요 시 로깅 추가
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR));
+                .body(ApiResult.fail(ErrorCode.INTERNAL_ERROR));
     }
 
 }
