@@ -1,8 +1,8 @@
 package goormthonuniv.team_22_be.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import goormthonuniv.team_22_be.api.entity.Member;
-import goormthonuniv.team_22_be.api.service.MemberService;
+import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.member.application.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberService;
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
 

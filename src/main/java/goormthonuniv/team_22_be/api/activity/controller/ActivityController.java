@@ -3,7 +3,7 @@ package goormthonuniv.team_22_be.api.activity.controller;
 import goormthonuniv.team_22_be.api.activity.service.ActivityService;
 import goormthonuniv.team_22_be.api.activity.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.api.activity.dto.ActivityResponseDto;
-import goormthonuniv.team_22_be.member.presentation.docs.ActivityApiDocs;
+import goormthonuniv.team_22_be.api.activity.controller.docs.ActivityApiDocs;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

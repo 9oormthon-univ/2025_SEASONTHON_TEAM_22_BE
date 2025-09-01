@@ -1,7 +1,7 @@
-package goormthonuniv.team_22_be.api.service;
+package goormthonuniv.team_22_be.member.application.service;
 
-import goormthonuniv.team_22_be.api.entity.Member;
-import goormthonuniv.team_22_be.api.repository.MemberRepository;
+import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.member.domain.repository.MemberRepository;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberServiceImpl {
     private final MemberRepository memberRepository;
 
     @Transactional

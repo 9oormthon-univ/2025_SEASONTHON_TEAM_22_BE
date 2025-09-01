@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.api.entity;
+package goormthonuniv.team_22_be.member.domain.model;
 
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
 import jakarta.persistence.*;

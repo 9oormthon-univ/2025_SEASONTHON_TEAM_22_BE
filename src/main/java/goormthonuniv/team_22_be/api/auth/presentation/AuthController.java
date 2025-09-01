@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.api.controller;
+package goormthonuniv.team_22_be.api.auth.presentation;
 
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import lombok.RequiredArgsConstructor;
