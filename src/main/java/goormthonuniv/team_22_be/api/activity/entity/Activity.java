@@ -36,6 +36,7 @@ public class Activity extends BaseTimeEntity {
     @Column(name = "location", nullable = false, length = 200)
     private String location;
 
+    @Builder.Default
     @Column(name = "likes", nullable = false)
     private Long likes = 0L;
 

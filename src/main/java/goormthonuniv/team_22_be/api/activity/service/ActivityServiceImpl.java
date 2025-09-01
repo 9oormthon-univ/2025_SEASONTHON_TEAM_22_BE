@@ -1,6 +1,4 @@
-package goormthonuniv.team_22_be.api.service;
-
-import goormthonuniv.team_22_be.api.activity.service.ActivityService;
+package goormthonuniv.team_22_be.api.activity.service;
 
 import goormthonuniv.team_22_be.api.activity.dto.ActivityListItemResponse;
 import goormthonuniv.team_22_be.api.activity.dto.ActivityRequestDto;

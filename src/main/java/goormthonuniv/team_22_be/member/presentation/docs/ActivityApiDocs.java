@@ -50,7 +50,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 생성",
             description = "새로운 활동을 생성합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")},
+            security = {@SecurityRequirement(name = "BearerAuth")},
             responses = {
                     @ApiResponse(responseCode = "201",
                             description = "생성 성공",
@@ -66,7 +66,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 수정",
             description = "기존 활동을 수정합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @PutMapping("/{id}")
     ResponseEntity<ApiResult<ActivityResponseDto>> update(@PathVariable Long id,
@@ -75,7 +75,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 삭제",
             description = "활동을 삭제합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @DeleteMapping("/{id}")
     ResponseEntity<ApiResult<Void>> delete(@PathVariable Long id);
@@ -85,7 +85,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 찜",
             description = "해당 활동을 찜합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @PostMapping("/{id}/like")
     ResponseEntity<ApiResult<Void>> like(@PathVariable Long id);
@@ -93,7 +93,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 찜 해제",
             description = "해당 활동의 찜을 해제합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @DeleteMapping("/{id}/like")
     ResponseEntity<ApiResult<Void>> unlike(@PathVariable Long id);
@@ -103,7 +103,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 신청",
             description = "해당 활동을 신청합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @PostMapping("/{id}/apply")
     ResponseEntity<ApiResult<Void>> apply(@PathVariable Long id);
@@ -111,7 +111,7 @@ public interface ActivityApiDocs {
     @Operation(
             summary = "활동 신청 취소",
             description = "해당 활동 신청을 취소합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")}
+            security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @DeleteMapping("/{id}/apply")
     ResponseEntity<ApiResult<Void>> cancelApply(@PathVariable Long id);
