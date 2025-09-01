@@ -1,6 +1,7 @@
 package goormthonuniv.team_22_be.common.config;
 
 import goormthonuniv.team_22_be.auth.JwtAuthFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,50 +14,50 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http,
-//                                    AuthenticationSuccessHandler successHandler,
-//                                    JwtAuthFilter jwtAuthFilter) throws Exception {
-//        http.csrf(csrf -> csrf.disable());
-//        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//
-//        http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/", "/health", "/error", "/oauth2/**", "/login/**").permitAll()
-//                .requestMatchers("/api/secure/**").authenticated()
-//                .anyRequest().permitAll()
-//        );
-//
-//        http.oauth2Login(o -> o
-//                .loginPage("/oauth2/authorization/google")
-//                .successHandler(successHandler)
-//        );
-//
-//        // UsernamePasswordAuthenticationFilter 앞에 JWT 필터 삽입
-//        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
+
+    private final JwtAuthFilter jwtAuthFilter;
+    private final AuthenticationSuccessHandler successHandler;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, AuthenticationSuccessHandler successHandler) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.successHandler = successHandler;
+    }
+
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http,
-                                    AuthenticationSuccessHandler successHandler) throws Exception {
-        http.csrf(csrf -> csrf.disable());
-        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/health", "/error", "/oauth2/**", "/login/**").permitAll()
-                .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html"
-                ).permitAll()
-                .anyRequest().authenticated()
-        );
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/health", "/error").permitAll()
+                        .requestMatchers(
+                                "/oauth2/**",
+                                "/login/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui.html/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
 
-        http.oauth2Login(o -> o
-                .loginPage("/oauth2/authorization/google")
-                .successHandler(successHandler)
-        );
+                // 인증 실패 시 302 리다이렉트 대신 401 JSON
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.setContentType("application/json;charset=UTF-8");
+                    res.getWriter().write("{\"success\":false,\"code\":\"E401\",\"message\":\"Unauthorized\"}");
+                }))
 
+                // OAuth2 로그인 성공 시 JSON 토큰 내려주는 기존 핸들러
+                .oauth2Login(o -> o
+                        .loginPage("/oauth2/authorization/google")
+                        .successHandler(successHandler)
+                )
+
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 }

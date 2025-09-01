@@ -22,7 +22,10 @@ public enum ErrorCode {
 
     // 멤버/도메인
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M404", "회원 정보를 찾을 수 없습니다."),
-    MEMBER_DUPLICATED(HttpStatus.CONFLICT, "M409", "이미 가입된 계정입니다.");
+    MEMBER_DUPLICATED(HttpStatus.CONFLICT, "M409", "이미 가입된 계정입니다."),
+
+    // --- 추가 ---
+    CONFLICT(HttpStatus.CONFLICT, "E409", "리소스 충돌이 발생했습니다."); // ex. 중복 신청, 중복 찜
 
     private final HttpStatus httpStatus;
     private final String code;
