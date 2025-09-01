@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS activities (
     title          varchar(50)                         NOT NULL COMMENT '활동 제목',
     content        varchar(255)                        NOT NULL COMMENT '활동 내용',
     location       varchar(50)                         NOT NULL COMMENT '활동 장소',
-    likes          bigint                              NOT NULL COMMENT '찜한 유저 수',
+    likes          bigint DEFAULT 0                    NOT NULL COMMENT '찜한 유저 수',
     apply_start_at TIMESTAMP                                    COMMENT '신청 시작일자',
     apply_end_at   TIMESTAMP                                    COMMENT '신청 마감일자',
     recruit_status varchar(20)                         NOT NULL COMMENT '모집 상태',
