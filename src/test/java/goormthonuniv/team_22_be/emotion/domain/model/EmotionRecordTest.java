@@ -9,7 +9,7 @@ class EmotionRecordTest {
 
     @Test
     @DisplayName("감정 기록 생성 테스트")
-    void createEmotionRecord() {
+    void createEmotionRecordTest() {
         //given
         EmotionState emotionState = EmotionState.HAPPY;
         String emotionText = "오늘은 정말 행복한 하루였어요!";
