@@ -5,16 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "members")
 @Builder
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id", columnDefinition = "BIGINT")
     private Long id;
 
     @Column(nullable = false)

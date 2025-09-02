@@ -33,7 +33,7 @@ public class Answer extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_card_id")
+    @JoinColumn(name = "question_id")
     private QuestionCard questionCard;
 
     private String content;
