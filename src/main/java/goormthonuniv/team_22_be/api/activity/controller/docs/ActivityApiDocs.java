@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.member.presentation.docs;
+package goormthonuniv.team_22_be.api.activity.controller.docs;
 
 import goormthonuniv.team_22_be.api.activity.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.api.activity.dto.ActivityResponseDto;

@@ -1,6 +1,6 @@
 package goormthonuniv.team_22_be.auth;
 
-import goormthonuniv.team_22_be.api.entity.Member;
+import goormthonuniv.team_22_be.member.domain.model.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

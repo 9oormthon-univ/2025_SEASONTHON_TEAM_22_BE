@@ -1,19 +1,19 @@
 -- liquibase formatted sql
--- changeset sanghyun:V007-create-activity-likes runInTransaction:false
+
+-- changeset Seungwon-Choi:5 runInTransaction:false
 
 CREATE TABLE IF NOT EXISTS activity_likes (
-                                              id          BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '찜 PK',
-                                              member_id   BIGINT NOT NULL COMMENT '회원 FK',
-                                              activity_id BIGINT NOT NULL COMMENT '활동 FK',
-                                              created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '생성일시',
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY   NOT NULL COMMENT '활동 찜하기 PK',
+    member_id   bigint                              NOT NULL COMMENT '회원 FK',
+    activity_id bigint                              NOT NULL COMMENT '활동 FK',
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '데이터 생성일자',
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '데이터 수정일자',
 
-                                              CONSTRAINT uk_activity_like UNIQUE (member_id, activity_id),
+    CONSTRAINT fk_activity_likes_to_members
+        FOREIGN KEY (member_id) REFERENCES members (id),
 
-    CONSTRAINT fk_activity_like_member
-    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
-    CONSTRAINT fk_activity_like_activity
-    FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE
-    );
+    CONSTRAINT fk_activity_likes_to_activities
+        FOREIGN KEY (activity_id) REFERENCES activities (id)
+);
 
-CREATE INDEX idx_activity_like_member   ON activity_likes(member_id);
-CREATE INDEX idx_activity_like_activity ON activity_likes(activity_id);
+CREATE INDEX idx_activity_likes_member_id ON activity_likes(member_id);

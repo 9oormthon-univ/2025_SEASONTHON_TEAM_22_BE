@@ -10,7 +10,7 @@ import goormthonuniv.team_22_be.api.activity.entity.ApplicationStatus;
 import goormthonuniv.team_22_be.api.activity.repository.ActivityApplicationRepository;
 import goormthonuniv.team_22_be.api.activity.repository.ActivityLikeRepository;
 import goormthonuniv.team_22_be.api.activity.repository.ActivityRepository;
-import goormthonuniv.team_22_be.api.entity.Member;
+import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.common.security.AuthUtils;
