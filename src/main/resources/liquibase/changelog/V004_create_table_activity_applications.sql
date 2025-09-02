@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS activity_applications (
     member_id      bigint                              NOT NULL COMMENT '회원 FK',
     activity_id    bigint                              NOT NULL COMMENT '활동 FK',
     status         varchar(20)                         NOT NULL COMMENT '활동 신청 상태',
-    applied_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '데이터 생성일자',
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '데이터 생성일자',
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '데이터 수정일자',
 
     CONSTRAINT fk_activity_applications_to_members

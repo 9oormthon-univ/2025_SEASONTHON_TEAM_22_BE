@@ -29,7 +29,6 @@ public class Activity extends BaseTimeEntity {
     @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Lob
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
