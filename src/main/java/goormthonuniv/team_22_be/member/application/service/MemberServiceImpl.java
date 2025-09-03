@@ -1,9 +1,9 @@
 package goormthonuniv.team_22_be.member.application.service;
 
-import goormthonuniv.team_22_be.member.domain.model.Member;
-import goormthonuniv.team_22_be.member.domain.repository.MemberRepository;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
+import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.member.infrastructure.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl {
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberRepository;
 
     @Transactional
     public Member upsertBySocial(String provider, String providerUserId) {
