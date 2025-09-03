@@ -35,6 +35,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public PageResponse<CommentResponseDto> myComments(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+
+        var page = commentRepository.findByMember_Id(memberId, pageable)
+                .map(CommentResponseDto::from);
+
+        return PageResponse.of(page);
+    }
+
+    @Override
     public CommentResponseDto create(Long postId, CommentCreateDto dto) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 

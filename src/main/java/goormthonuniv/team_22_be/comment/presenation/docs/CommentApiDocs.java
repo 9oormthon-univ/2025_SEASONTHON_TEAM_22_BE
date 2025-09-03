@@ -28,6 +28,14 @@ public interface CommentApiDocs {
             @ParameterObject Pageable pageable
     );
 
+    @Operation(
+            summary = "내 댓글 목록",
+            description = "로그인한 사용자가 작성한 댓글 목록을 페이징으로 조회합니다.",
+            security = {@SecurityRequirement(name = "BearerAuth")}
+    )
+    @GetMapping("/me")
+    ResponseEntity<ApiResult<PageResponse<CommentResponseDto>>> myComments(@ParameterObject Pageable pageable);
+
     @Operation(summary = "댓글 작성", description = "특정 게시글에 댓글을 작성합니다.",
             security = {@SecurityRequirement(name = "BearerAuth")},
             responses = {

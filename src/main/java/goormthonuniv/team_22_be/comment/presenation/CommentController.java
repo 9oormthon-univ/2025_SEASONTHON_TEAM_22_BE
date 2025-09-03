@@ -26,6 +26,12 @@ public class CommentController implements CommentApiDocs {
     }
 
     @Override
+    public ResponseEntity<ApiResult<PageResponse<CommentResponseDto>>> myComments(Pageable pageable) {
+        var page = commentService.myComments(pageable);
+        return ResponseEntity.ok(ApiResult.ok(page));
+    }
+
+    @Override
     public ResponseEntity<ApiResult<CommentResponseDto>> create(Long postId, CommentCreateDto dto) {
         var res = commentService.create(postId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResult.ok(res));
