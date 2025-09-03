@@ -33,4 +33,11 @@ public class EmotionRecordServiceImpl implements EmotionRecordService {
 
         return emotionRecordJpaRepository.save(emotionRecord).getId();
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EmotionRecordResponse> getEmotionRecords(Pageable pageable) {
+        Page<EmotionRecord> emotionRecordPage = emotionRecordJpaRepository.findAll(pageable);
+        return emotionRecordPage.map(EmotionRecordResponse::from);
+    }
 }

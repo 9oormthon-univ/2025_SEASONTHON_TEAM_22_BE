@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface EmotionRecordService {
 
     Long createEmotionRecord(Long memberId, CreateEmotionRecordRequest request);
+    Page<EmotionRecordResponse> getEmotionRecords(Pageable pageable);
 }

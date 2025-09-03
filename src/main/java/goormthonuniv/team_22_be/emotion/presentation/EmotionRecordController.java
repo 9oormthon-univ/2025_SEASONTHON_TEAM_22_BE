@@ -33,4 +33,13 @@ public class EmotionRecordController implements EmotionRecordApiDocs {
         Long id = emotionRecordService.createEmotionRecord(memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResult.ok(id));
     }
+
+    @Override
+    @GetMapping
+    public ResponseEntity<ApiResult<PageResponse<EmotionRecordResponse>>> getEmotionRecords(
+            @PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<EmotionRecordResponse> page = emotionRecordService.getEmotionRecords(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(PageResponse.of(page)));
+    }
 }

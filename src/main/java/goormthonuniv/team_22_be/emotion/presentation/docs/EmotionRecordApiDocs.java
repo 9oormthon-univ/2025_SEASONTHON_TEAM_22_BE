@@ -39,4 +39,22 @@ public interface EmotionRecordApiDocs {
             }
     )
     ResponseEntity<ApiResult<Long>> createEmotionRecord(Long memberId, CreateEmotionRecordRequest request);
+
+    @Operation(
+            summary = "감정 기록 목록 조회",
+            description = "페이지네이션으로 감정 기록 목록을 조회합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "조회 성공",
+                            content = @Content(schema = @Schema(implementation = PageResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "인증 실패",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    )
+            }
+    )
+    ResponseEntity<ApiResult<PageResponse<EmotionRecordResponse>>> getEmotionRecords(Pageable pageable);
 }
