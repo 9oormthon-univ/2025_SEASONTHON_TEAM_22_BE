@@ -1,19 +1,10 @@
-package goormthonuniv.team_22_be.post.domain.model;
+package goormthonuniv.team_22_be.comment.domain.model;
 
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.post.domain.model.Post;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "comments")
@@ -28,21 +19,26 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    private String accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
+    @Column(nullable = false, length = 255)
     private String content;
 
-    public static Comment create(Post post, String accountId, String content) {
+    // ==== 정적 팩토리 메서드 ====
+    public static Comment create(Post post, Member member, String content) {
         return Comment.builder()
                 .post(post)
-                .accountId(accountId)
+                .member(member)
                 .content(content)
                 .build();
     }
 
+    // ==== 비즈니스 메서드 ====
     public void update(String content) {
         this.content = content;
     }

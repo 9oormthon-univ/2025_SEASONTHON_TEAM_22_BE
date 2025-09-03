@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.post.application.service;
+package goormthonuniv.team_22_be.post.application;
 
 import goormthonuniv.team_22_be.activity.domain.model.Activity;
 import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
@@ -13,6 +13,7 @@ import goormthonuniv.team_22_be.common.security.AuthUtils;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.post.domain.model.Post;
 import goormthonuniv.team_22_be.post.domain.model.PostCategory;
+import goormthonuniv.team_22_be.post.domain.service.PostService;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
