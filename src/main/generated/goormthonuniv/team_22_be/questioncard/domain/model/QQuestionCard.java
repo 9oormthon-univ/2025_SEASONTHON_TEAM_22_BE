@@ -21,6 +21,8 @@ public class QQuestionCard extends EntityPathBase<QuestionCard> {
 
     public final goormthonuniv.team_22_be.common.utils.QBaseTimeEntity _super = new goormthonuniv.team_22_be.common.utils.QBaseTimeEntity(this);
 
+    public final EnumPath<CardType> cardType = createEnum("cardType", CardType.class);
+
     public final StringPath content = createString("content");
 
     //inherited
