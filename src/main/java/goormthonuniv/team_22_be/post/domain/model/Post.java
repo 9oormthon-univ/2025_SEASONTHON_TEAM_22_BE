@@ -1,6 +1,6 @@
 package goormthonuniv.team_22_be.post.domain.model;
 
-import goormthonuniv.team_22_be.api.activity.entity.Activity;
+import goormthonuniv.team_22_be.activity.domain.model.Activity;
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import jakarta.persistence.Entity;

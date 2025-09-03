@@ -1,6 +1,6 @@
 package goormthonuniv.team_22_be.post.application.service;
 
-import goormthonuniv.team_22_be.api.activity.entity.Activity;
+import goormthonuniv.team_22_be.activity.domain.model.Activity;
 import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
 import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
 import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
