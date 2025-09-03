@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.post.application.service;
+package goormthonuniv.team_22_be.post.domain.service;
 
 import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
 import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
