@@ -30,10 +30,10 @@ public class Comment extends BaseTimeEntity {
     private String content;
 
     // ==== 정적 팩토리 메서드 ====
-    public static Comment create(Post post, Member member, String content) {
+    public static Comment create(Member member, Post post, String content) {
         return Comment.builder()
-                .post(post)
                 .member(member)
+                .post(post)
                 .content(content)
                 .build();
     }
