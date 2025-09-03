@@ -29,7 +29,7 @@ public interface CommentApiDocs {
     );
 
     @Operation(summary = "댓글 작성", description = "특정 게시글에 댓글을 작성합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")},
+            security = {@SecurityRequirement(name = "BearerAuth")},
             responses = {
                     @ApiResponse(responseCode = "201", description = "작성 성공",
                             content = @Content(schema = @Schema(implementation = CommentResponseDto.class))),
@@ -41,13 +41,13 @@ public interface CommentApiDocs {
                                                          @RequestBody CommentCreateDto dto);
 
     @Operation(summary = "댓글 수정", description = "본인 댓글만 수정 가능합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")})
+            security = {@SecurityRequirement(name = "BearerAuth")})
     @PutMapping("/comments/{id}")
     ResponseEntity<ApiResult<CommentResponseDto>> update(@PathVariable Long id,
                                                          @RequestBody CommentUpdateDto dto);
 
     @Operation(summary = "댓글 삭제", description = "본인 댓글만 삭제 가능합니다.",
-            security = {@SecurityRequirement(name = "bearerAuth")})
+            security = {@SecurityRequirement(name = "BearerAuth")})
     @DeleteMapping("/comments/{id}")
     ResponseEntity<ApiResult<Void>> delete(@PathVariable Long id);
 }

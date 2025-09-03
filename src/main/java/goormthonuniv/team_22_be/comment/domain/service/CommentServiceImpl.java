@@ -54,28 +54,28 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto update(Long commentId, CommentUpdateDto dto) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
-        Comment c = commentRepository.findById(commentId)
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "댓글을 찾을 수 없습니다. id=" + commentId));
 
-        if (!c.getMember().getId().equals(memberId)) {
+        if (!comment.getMember().getId().equals(memberId)) {
             throw new CustomException(ErrorCode.FORBIDDEN, "자신의 댓글만 수정할 수 있습니다.");
         }
 
-        c.update(dto.content());
-        return CommentResponseDto.from(c);
+        comment.update(dto.content());
+        return CommentResponseDto.from(comment);
     }
 
     @Override
     public void delete(Long commentId) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
-        Comment c = commentRepository.findById(commentId)
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "댓글을 찾을 수 없습니다. id=" + commentId));
 
-        if (!c.getMember().getId().equals(memberId)) {
+        if (!comment.getMember().getId().equals(memberId)) {
             throw new CustomException(ErrorCode.FORBIDDEN, "자신의 댓글만 삭제할 수 있습니다.");
         }
 
-        commentRepository.delete(c);
+        commentRepository.delete(comment);
     }
 }

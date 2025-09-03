@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.post.domain.model;
+package goormthonuniv.team_22_be.comment.domain.model;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,15 +16,13 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QComment extends EntityPathBase<Comment> {
 
-    private static final long serialVersionUID = 2103813859L;
+    private static final long serialVersionUID = 318474586L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QComment comment = new QComment("comment");
 
     public final goormthonuniv.team_22_be.common.utils.QBaseTimeEntity _super = new goormthonuniv.team_22_be.common.utils.QBaseTimeEntity(this);
-
-    public final StringPath accountId = createString("accountId");
 
     public final StringPath content = createString("content");
 
@@ -33,7 +31,9 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final QPost post;
+    public final goormthonuniv.team_22_be.member.domain.model.QMember member;
+
+    public final goormthonuniv.team_22_be.post.domain.model.QPost post;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
@@ -56,7 +56,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
+        this.member = inits.isInitialized("member") ? new goormthonuniv.team_22_be.member.domain.model.QMember(forProperty("member")) : null;
+        this.post = inits.isInitialized("post") ? new goormthonuniv.team_22_be.post.domain.model.QPost(forProperty("post"), inits.get("post")) : null;
     }
 
 }
