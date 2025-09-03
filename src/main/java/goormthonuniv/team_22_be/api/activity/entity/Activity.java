@@ -49,6 +49,7 @@ public class Activity extends BaseTimeEntity {
     @Column(name = "recruit_status", nullable = false, length = 20)
     private RecruitStatus recruitStatus;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "activity",
             cascade = CascadeType.REMOVE,
@@ -56,6 +57,7 @@ public class Activity extends BaseTimeEntity {
     )
     private List<ActivityApplication> applicationList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "activity",
             cascade = CascadeType.REMOVE,
