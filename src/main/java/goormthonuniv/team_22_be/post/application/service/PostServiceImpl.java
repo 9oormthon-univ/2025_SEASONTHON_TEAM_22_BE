@@ -1,12 +1,12 @@
-package goormthonuniv.team_22_be.api.post.service;
+package goormthonuniv.team_22_be.post.application.service;
 
 import goormthonuniv.team_22_be.api.activity.entity.Activity;
-import goormthonuniv.team_22_be.api.post.dto.PostCreateDto;
-import goormthonuniv.team_22_be.api.post.dto.PostResponseDto;
-import goormthonuniv.team_22_be.api.post.dto.PostUpdateDto;
-import goormthonuniv.team_22_be.api.post.entity.PostLike;
-import goormthonuniv.team_22_be.api.post.repository.PostLikeRepository;
-import goormthonuniv.team_22_be.api.post.repository.PostRepository;
+import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
+import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
+import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
+import goormthonuniv.team_22_be.post.domain.model.PostLike;
+import goormthonuniv.team_22_be.post.domain.repository.PostLikeRepository;
+import goormthonuniv.team_22_be.post.domain.repository.PostRepository;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.common.security.AuthUtils;

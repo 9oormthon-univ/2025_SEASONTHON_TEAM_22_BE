@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.api.post.dto;
+package goormthonuniv.team_22_be.post.application.dto;
 
 import goormthonuniv.team_22_be.post.domain.model.PostCategory;
 import io.swagger.v3.oas.annotations.media.Schema;

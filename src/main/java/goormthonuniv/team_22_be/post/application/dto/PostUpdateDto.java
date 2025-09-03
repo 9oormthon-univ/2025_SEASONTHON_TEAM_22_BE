@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.api.post.dto;
+package goormthonuniv.team_22_be.post.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

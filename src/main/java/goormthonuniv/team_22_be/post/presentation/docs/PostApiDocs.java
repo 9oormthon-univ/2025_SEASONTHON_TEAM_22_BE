@@ -1,8 +1,8 @@
-package goormthonuniv.team_22_be.api.post.presentation.docs;
+package goormthonuniv.team_22_be.post.presentation.docs;
 
-import goormthonuniv.team_22_be.api.post.dto.PostCreateDto;
-import goormthonuniv.team_22_be.api.post.dto.PostResponseDto;
-import goormthonuniv.team_22_be.api.post.dto.PostUpdateDto;
+import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
+import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
+import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;

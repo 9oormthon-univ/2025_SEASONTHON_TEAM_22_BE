@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.api.post.repository;
+package goormthonuniv.team_22_be.post.domain.repository;
 
 import goormthonuniv.team_22_be.post.domain.model.Post;
 import goormthonuniv.team_22_be.post.domain.model.PostCategory;

@@ -1,10 +1,10 @@
-package goormthonuniv.team_22_be.api.post.controller;
+package goormthonuniv.team_22_be.post.presentation;
 
-import goormthonuniv.team_22_be.api.post.dto.PostCreateDto;
-import goormthonuniv.team_22_be.api.post.dto.PostResponseDto;
-import goormthonuniv.team_22_be.api.post.dto.PostUpdateDto;
-import goormthonuniv.team_22_be.api.post.presentation.docs.PostApiDocs;
-import goormthonuniv.team_22_be.api.post.service.PostService;
+import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
+import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
+import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
+import goormthonuniv.team_22_be.post.presentation.docs.PostApiDocs;
+import goormthonuniv.team_22_be.post.application.service.PostService;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import jakarta.validation.Valid;
