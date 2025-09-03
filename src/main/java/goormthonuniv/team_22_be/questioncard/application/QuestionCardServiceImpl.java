@@ -3,8 +3,8 @@ package goormthonuniv.team_22_be.questioncard.application;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
-import goormthonuniv.team_22_be.questioncard.domain.repository.QuestionCardRepositoryCustom;
 import goormthonuniv.team_22_be.questioncard.domain.service.QuestionCardService;
+import goormthonuniv.team_22_be.questioncard.infrastructure.QuestionCardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class QuestionCardServiceImpl implements QuestionCardService {
 
-    private final QuestionCardRepositoryCustom questionCardRepository;
+    private final QuestionCardRepository questionCardRepository;
 
     @Transactional(readOnly = true)
     @Override

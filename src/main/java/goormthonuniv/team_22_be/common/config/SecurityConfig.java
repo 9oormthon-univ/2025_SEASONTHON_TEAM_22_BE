@@ -40,7 +40,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui.html/**",
                                 "/api/v1/emotions/**", // TODO 테스트용, 추후 삭제
-                                "/api/v1/question-cards/**" // TODO 테스트용, 추후 삭제
+                                "/api/v1/question-cards/**", // TODO 테스트용, 추후 삭제
+                                "/api/v1/answers/**" // TODO 테스트용, 추후 삭제
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
