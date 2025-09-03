@@ -9,7 +9,7 @@ import goormthonuniv.team_22_be.emotion.domain.model.EmotionState;
 import goormthonuniv.team_22_be.emotion.domain.service.EmotionRecordService;
 import goormthonuniv.team_22_be.emotion.infrastructure.EmotionRecordJpaRepository;
 import goormthonuniv.team_22_be.member.domain.model.Member;
-import goormthonuniv.team_22_be.member.infrastructure.MemberJpaRepository;
+import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmotionRecordServiceImpl implements EmotionRecordService {
 
     private final EmotionRecordJpaRepository emotionRecordJpaRepository;
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     @Override
