@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerServiceImpl implements AnswerService {
@@ -31,8 +34,24 @@ public class AnswerServiceImpl implements AnswerService {
         QuestionCard questionCard = questionCardRepository.findById(questionCardId)
                 .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_CARD_NOT_FOUND));
 
+        if (answerRepository.existsByMemberAndQuestionCardId(member, questionCard)) {
+            throw new CustomException(ErrorCode.ANSWER_ALREADY_EXISTS);
+        }
+
         Answer answer = Answer.create(member, questionCard, request.content());
 
         return answerRepository.save(answer).getId();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Long getDailyProgress(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
+
+        return answerRepository.countAnswersByMemberForToday(member, startOfDay, endOfDay);
     }
 }

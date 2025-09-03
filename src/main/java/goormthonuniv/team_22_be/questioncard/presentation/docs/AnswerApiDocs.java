@@ -3,6 +3,7 @@ package goormthonuniv.team_22_be.questioncard.presentation.docs;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.questioncard.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questioncard.application.dto.DailyProgressResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,4 +36,27 @@ public interface AnswerApiDocs {
             }
     )
     ResponseEntity<ApiResult<Long>> createAnswer(Long memberId, Long questionCardId, CreateAnswerRequest request);
+
+    @Operation(
+            summary = "일일 답변 진행률 조회",
+            description = "사용자의 일일 답변 진행률을 조회합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "일일 답변 진행률 조회 성공",
+                            content = @Content(schema = @Schema(implementation = DailyProgressResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "멤버를 찾을 수 없음",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "이미 답변이 존재함",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    )
+            }
+    )
+    ResponseEntity<ApiResult<DailyProgressResponse>> getDailyProgress(Long memberId);
 }
