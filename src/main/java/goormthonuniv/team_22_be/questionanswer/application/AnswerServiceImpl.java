@@ -5,10 +5,11 @@ import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
 import goormthonuniv.team_22_be.questionanswer.domain.model.Answer;
-import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import goormthonuniv.team_22_be.questionanswer.domain.service.AnswerService;
 import goormthonuniv.team_22_be.questionanswer.infrastructure.AnswerRepository;
+import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import goormthonuniv.team_22_be.questioncard.infrastructure.QuestionCardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +36,9 @@ public class AnswerServiceImpl implements AnswerService {
         QuestionCard questionCard = questionCardRepository.findById(questionCardId)
                 .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_CARD_NOT_FOUND));
 
-        if (answerRepository.existsByMemberAndQuestionCardId(member, questionCard)) {
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+
+        if (answerRepository.existsByMemberAndQuestionCardId(member, questionCard, startOfDay)) {
             throw new CustomException(ErrorCode.ANSWER_ALREADY_EXISTS);
         }
 
@@ -53,5 +57,37 @@ public class AnswerServiceImpl implements AnswerService {
         LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
 
         return answerRepository.countAnswersByMemberForToday(member, startOfDay, endOfDay);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgressStatusResponse getProgressStatus(Long memberId) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
+
+        List<Long> dailyCounts = answerRepository.getDailyAnswerCounts(memberId);
+
+        Long completedAnswersToday = answerRepository.getCompletedAnswersForToday(memberId, startOfDay, endOfDay);
+
+        Long totalTrainedSessions = (long) dailyCounts.size();
+
+        Long averageCompletion = calculateAverageCompletion(dailyCounts);
+
+        return ProgressStatusResponse.from(totalTrainedSessions, completedAnswersToday, averageCompletion);
+    }
+
+    private Long calculateAverageCompletion(List<Long> dailyCounts) {
+        if (dailyCounts == null || dailyCounts.isEmpty()) {
+            return 0L;
+        }
+
+        final int DAILY_GOAL = 6;
+
+        double average = dailyCounts.stream()
+                .mapToDouble(count -> Math.min(100.0, (double) count / DAILY_GOAL * 100))
+                .average()
+                .orElse(0.0);
+
+        return Math.round(average);
     }
 }

@@ -3,6 +3,8 @@ package goormthonuniv.team_22_be.questionanswer.presentation;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
+import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
+import goormthonuniv.team_22_be.questionanswer.infrastructure.AnswerRepository;
 import goormthonuniv.team_22_be.questionanswer.presentation.docs.AnswerApiDocs;
 import goormthonuniv.team_22_be.questionanswer.domain.service.AnswerService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/v1/answers")
 @RequiredArgsConstructor
 public class AnswerController implements AnswerApiDocs {
 
     private final AnswerService answerService;
+    private final AnswerRepository answerRepository;
 
     @Override
     @PostMapping("/{memberId}/{questionCardId}")
@@ -36,5 +42,11 @@ public class AnswerController implements AnswerApiDocs {
     public ResponseEntity<ApiResult<DailyProgressResponse>> getDailyProgress(@PathVariable Long memberId) {
         Long dailyProgress = answerService.getDailyProgress(memberId);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(DailyProgressResponse.from(dailyProgress)));
+    }
+
+    @GetMapping("/{memberId}/progress-status")
+    public ResponseEntity<ApiResult<ProgressStatusResponse>> getProgressStatus(@PathVariable Long memberId) {
+        ProgressStatusResponse response = answerService.getProgressStatus(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(response));
     }
 }
