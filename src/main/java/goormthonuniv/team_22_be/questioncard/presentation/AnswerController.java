@@ -35,6 +35,6 @@ public class AnswerController implements AnswerApiDocs {
     @GetMapping("/{memberId}/daily-progress")
     public ResponseEntity<ApiResult<DailyProgressResponse>> getDailyProgress(@PathVariable Long memberId) {
         Long dailyProgress = answerService.getDailyProgress(memberId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(new DailyProgressResponse(dailyProgress)));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(DailyProgressResponse.from(dailyProgress)));
     }
 }
