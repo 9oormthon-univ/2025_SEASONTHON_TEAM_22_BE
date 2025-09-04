@@ -1,10 +1,10 @@
-package goormthonuniv.team_22_be.questioncard.presentation;
+package goormthonuniv.team_22_be.questionanswer.presentation;
 
 import goormthonuniv.team_22_be.common.response.ApiResult;
-import goormthonuniv.team_22_be.questioncard.application.dto.CreateAnswerRequest;
-import goormthonuniv.team_22_be.questioncard.application.dto.DailyProgressResponse;
-import goormthonuniv.team_22_be.questioncard.domain.service.AnswerService;
-import goormthonuniv.team_22_be.questioncard.presentation.docs.AnswerApiDocs;
+import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
+import goormthonuniv.team_22_be.questionanswer.presentation.docs.AnswerApiDocs;
+import goormthonuniv.team_22_be.questionanswer.domain.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

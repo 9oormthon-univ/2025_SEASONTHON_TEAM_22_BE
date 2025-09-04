@@ -1,15 +1,15 @@
-package goormthonuniv.team_22_be.questioncard.infrastructure;
+package goormthonuniv.team_22_be.questionanswer.infrastructure;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
-import goormthonuniv.team_22_be.questioncard.domain.repository.AnswerRepositoryCustom;
+import goormthonuniv.team_22_be.questionanswer.domain.repository.AnswerRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
-import static goormthonuniv.team_22_be.questioncard.domain.model.QAnswer.answer;
+import static goormthonuniv.team_22_be.questionanswer.domain.model.QAnswer.answer;
 
 @Repository
 @RequiredArgsConstructor

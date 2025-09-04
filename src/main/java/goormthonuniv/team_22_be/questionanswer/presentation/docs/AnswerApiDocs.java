@@ -1,9 +1,9 @@
-package goormthonuniv.team_22_be.questioncard.presentation.docs;
+package goormthonuniv.team_22_be.questionanswer.presentation.docs;
 
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
-import goormthonuniv.team_22_be.questioncard.application.dto.CreateAnswerRequest;
-import goormthonuniv.team_22_be.questioncard.application.dto.DailyProgressResponse;
+import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

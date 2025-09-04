@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.questioncard.application.dto;
+package goormthonuniv.team_22_be.questionanswer.application.dto;
 
 public record CreateAnswerRequest(
 

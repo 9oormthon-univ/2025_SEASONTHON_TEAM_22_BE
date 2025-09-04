@@ -1,10 +1,11 @@
-package goormthonuniv.team_22_be.questioncard.application.dto;
+package goormthonuniv.team_22_be.questionanswer.application.dto;
 
 public record DailyProgressResponse(
 
         Long answerQuestions,
         Double percentage
 ) {
+
     private static final int TOTAL_GOAL_COUNT = 6;
 
     public static DailyProgressResponse from(Long answerQuestions) {

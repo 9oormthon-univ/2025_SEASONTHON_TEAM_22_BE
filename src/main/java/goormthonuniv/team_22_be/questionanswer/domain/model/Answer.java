@@ -1,7 +1,8 @@
-package goormthonuniv.team_22_be.questioncard.domain.model;
+package goormthonuniv.team_22_be.questionanswer.domain.model;
 
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
 import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package goormthonuniv.team_22_be.questioncard.domain.service;
+package goormthonuniv.team_22_be.questionanswer.domain.service;
 
-import goormthonuniv.team_22_be.questioncard.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 
 public interface AnswerService {
 

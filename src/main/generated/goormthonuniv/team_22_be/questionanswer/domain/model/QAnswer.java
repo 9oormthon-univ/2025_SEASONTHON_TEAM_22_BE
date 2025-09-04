@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.questioncard.domain.model;
+package goormthonuniv.team_22_be.questionanswer.domain.model;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAnswer extends EntityPathBase<Answer> {
 
-    private static final long serialVersionUID = -1431039984L;
+    private static final long serialVersionUID = 1389921662L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -33,7 +33,7 @@ public class QAnswer extends EntityPathBase<Answer> {
 
     public final goormthonuniv.team_22_be.member.domain.model.QMember member;
 
-    public final QQuestionCard questionCard;
+    public final goormthonuniv.team_22_be.questioncard.domain.model.QQuestionCard questionCard;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
@@ -57,7 +57,7 @@ public class QAnswer extends EntityPathBase<Answer> {
     public QAnswer(Class<? extends Answer> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new goormthonuniv.team_22_be.member.domain.model.QMember(forProperty("member")) : null;
-        this.questionCard = inits.isInitialized("questionCard") ? new QQuestionCard(forProperty("questionCard")) : null;
+        this.questionCard = inits.isInitialized("questionCard") ? new goormthonuniv.team_22_be.questioncard.domain.model.QQuestionCard(forProperty("questionCard")) : null;
     }
 
 }

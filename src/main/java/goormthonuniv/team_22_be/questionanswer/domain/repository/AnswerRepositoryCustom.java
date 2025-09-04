@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.questioncard.domain.repository;
+package goormthonuniv.team_22_be.questionanswer.domain.repository;
 
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;

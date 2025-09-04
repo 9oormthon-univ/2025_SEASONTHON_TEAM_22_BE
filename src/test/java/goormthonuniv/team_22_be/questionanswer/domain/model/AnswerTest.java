@@ -1,4 +1,4 @@
-package goormthonuniv.team_22_be.questioncard.domain.model;
+package goormthonuniv.team_22_be.questionanswer.domain.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

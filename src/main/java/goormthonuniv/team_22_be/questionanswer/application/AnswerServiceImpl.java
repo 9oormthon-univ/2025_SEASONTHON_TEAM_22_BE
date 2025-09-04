@@ -1,14 +1,14 @@
-package goormthonuniv.team_22_be.questioncard.application;
+package goormthonuniv.team_22_be.questionanswer.application;
 
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
-import goormthonuniv.team_22_be.questioncard.application.dto.CreateAnswerRequest;
-import goormthonuniv.team_22_be.questioncard.domain.model.Answer;
+import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.domain.model.Answer;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
-import goormthonuniv.team_22_be.questioncard.domain.service.AnswerService;
-import goormthonuniv.team_22_be.questioncard.infrastructure.AnswerRepository;
+import goormthonuniv.team_22_be.questionanswer.domain.service.AnswerService;
+import goormthonuniv.team_22_be.questionanswer.infrastructure.AnswerRepository;
 import goormthonuniv.team_22_be.questioncard.infrastructure.QuestionCardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
