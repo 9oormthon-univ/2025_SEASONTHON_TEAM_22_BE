@@ -72,12 +72,9 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional(readOnly = true)
     @Override
     public ProgressStatusResponse getProgressStatus(Long memberId) {
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
-
         List<Long> dailyCounts = answerRepository.getDailyAnswerCounts(memberId);
 
-        Long completedAnswers = answerRepository.getCompletedAnswers(memberId, startOfDay, endOfDay);
+        Long completedAnswers = answerRepository.getCompletedAnswers(memberId);
 
         Long totalTrainedSessions = (long) dailyCounts.size();
 

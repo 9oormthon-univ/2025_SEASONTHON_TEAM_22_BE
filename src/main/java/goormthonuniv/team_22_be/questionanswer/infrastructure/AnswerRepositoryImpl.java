@@ -70,7 +70,7 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom {
     }
 
     @Override
-    public Long getCompletedAnswers(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay) {
+    public Long getCompletedAnswers(Long memberId) {
         Long completedAnswers = jpaQueryFactory
                 .select(answer.id.count())
                 .from(answer)
