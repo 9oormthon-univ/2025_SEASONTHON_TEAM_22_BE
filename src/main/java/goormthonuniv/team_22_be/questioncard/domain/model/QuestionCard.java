@@ -2,6 +2,8 @@ package goormthonuniv.team_22_be.questioncard.domain.model;
 
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +25,9 @@ public class QuestionCard extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private CardType cardType;
 
     private String content;
 

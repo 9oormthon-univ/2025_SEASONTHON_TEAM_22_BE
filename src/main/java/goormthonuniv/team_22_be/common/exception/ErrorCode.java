@@ -24,6 +24,11 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M404", "회원 정보를 찾을 수 없습니다."),
     MEMBER_DUPLICATED(HttpStatus.CONFLICT, "M409", "이미 가입된 계정입니다."),
 
+    QUESTION_CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Q404", "질문 카드를 찾을 수 없습니다."),
+    INVALID_CARD_TYPE(HttpStatus.BAD_REQUEST, "Q400", "유효하지 않은 카드 타입입니다."),
+
+    ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "A409", "이미 답변이 존재합니다."),
+
     // --- 추가 ---
     CONFLICT(HttpStatus.CONFLICT, "E409", "리소스 충돌이 발생했습니다."); // ex. 중복 신청, 중복 찜
 
