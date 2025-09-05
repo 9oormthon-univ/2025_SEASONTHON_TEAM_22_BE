@@ -5,6 +5,7 @@ import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.emotion.application.dto.CreateEmotionRecordRequest;
 import goormthonuniv.team_22_be.emotion.application.dto.EmotionRecordResponse;
+import goormthonuniv.team_22_be.emotion.application.dto.MostEmotionWeekResponse;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -57,4 +58,22 @@ public interface EmotionRecordApiDocs {
             }
     )
     ResponseEntity<ApiResult<PageResponse<EmotionRecordResponse>>> getEmotionRecords(Pageable pageable);
+
+    @Operation(
+            summary = "이번 주 가장 많이 느낀 감정 조회",
+            description = "이번 주에 가장 많이 기록된 감정을 조회합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "조회 성공",
+                            content = @Content(schema = @Schema(implementation = MostEmotionWeekResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "인증 실패",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    )
+            }
+    )
+    ResponseEntity<ApiResult<MostEmotionWeekResponse>> getMostEmotionalThisWeek(Long memberId);
 }
