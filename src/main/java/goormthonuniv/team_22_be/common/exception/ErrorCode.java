@@ -28,6 +28,8 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M404", "회원 정보를 찾을 수 없습니다."),
     MEMBER_DUPLICATED(HttpStatus.CONFLICT, "M409", "이미 가입된 계정입니다."),
 
+    EMOTION_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "ER404", "감정 기록을 찾을 수 없습니다."),
+
     QUESTION_CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Q404", "질문 카드를 찾을 수 없습니다."),
     INVALID_CARD_TYPE(HttpStatus.BAD_REQUEST, "Q400", "유효하지 않은 카드 타입입니다."),
 
