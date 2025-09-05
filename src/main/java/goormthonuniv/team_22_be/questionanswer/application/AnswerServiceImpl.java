@@ -97,7 +97,7 @@ public class AnswerServiceImpl implements AnswerService {
                     int completionRate = (int) Math.round(answeredCount * 100.0 / DAILY_GOAL);
                     return new DailyAnswerRecordResponse(date, answeredCount, completionRate);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return new PageImpl<>(records, pageable, tuples.getTotalElements());
     }
@@ -110,10 +110,12 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> answers = answerRepository.findAnswersByDate(memberId, startOfDay, endOfDay);
 
         return answers.stream()
-                .map(answer -> {
-                    return new AnswerResponse(answer.getQuestionCard().getCardType().getDescription(), answer.getQuestionCard().getContent(), answer.getContent());
-                })
-                .collect(Collectors.toList());
+                .map(answer -> new AnswerResponse(
+                        answer.getQuestionCard().getCardType().getDescription(),
+                        answer.getQuestionCard().getContent(),
+                        answer.getContent())
+                )
+                .toList();
     }
 
     private Long calculateAverageCompletion(List<Long> dailyCounts) {
