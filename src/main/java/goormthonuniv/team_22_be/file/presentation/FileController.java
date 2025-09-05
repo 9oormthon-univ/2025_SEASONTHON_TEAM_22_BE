@@ -6,6 +6,8 @@ import goormthonuniv.team_22_be.file.application.dto.PresignRequestDto;
 import goormthonuniv.team_22_be.file.application.dto.PresignResponseDto;
 import goormthonuniv.team_22_be.file.application.service.S3PresignService;
 import goormthonuniv.team_22_be.file.application.service.S3UploadService;
+import goormthonuniv.team_22_be.member.application.dto.MemberResponse;
+import goormthonuniv.team_22_be.member.domain.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class FileController {
 
     private final S3PresignService s3PresignService;
     private final S3UploadService s3UploadService;
+    private final MemberService memberService;
 
 
     @Operation(summary = "프로필 이미지 업로드용 Presigned URL 발급")

@@ -95,11 +95,7 @@ public interface MemberApiDocs {
             }
     )
     @GetMapping("/me")
-    ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo(
-//        TODO 회원가입, 로그인 기능 완성
-//        @Parameter(hidden = true)
-//        @AuthenticationPrincipal UserPrincipal authenticationPrincipal
-    );
+    ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo();
 
     @Operation(
             summary = "마이페이지 정보 수정",
@@ -126,7 +122,5 @@ public interface MemberApiDocs {
             }
     )
     @PutMapping("/me")
-    ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(
-            @Valid @RequestBody UpdateMyInfoRequest request
-    );
+    ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(@Valid @RequestBody UpdateMyInfoRequest request);
 }

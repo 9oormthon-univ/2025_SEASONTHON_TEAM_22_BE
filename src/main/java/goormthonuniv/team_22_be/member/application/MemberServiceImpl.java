@@ -102,7 +102,12 @@ public class MemberServiceImpl implements MemberService {
         }
 
         // JPA 영속성 컨텍스트에 의해 dirty checking으로 업데이트 반영
-        return UpdateMyInfoResponse.from(member);
+        return new UpdateMyInfoResponse(
+                member.getId(),
+                member.getNickname(),
+                member.getEmail(),
+                member.getProfileImageUrl()
+        );
     }
 
     // ===== 기본 닉네임 생성 =====

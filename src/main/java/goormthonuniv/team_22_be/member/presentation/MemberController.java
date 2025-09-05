@@ -36,16 +36,12 @@ public class MemberController implements MemberApiDocs {
     public ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo() {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
         Member me = memberService.getByIdOrThrow(memberId);
-        // MyPageResponse 매핑 방식은 프로젝트 정의에 맞게 사용
-        MyPageResponse body = MyPageResponse.from(me); // from(...) 없으면 빌더/생성자로 구성
-        return ResponseEntity.ok(ApiResult.ok(body));
+        return ResponseEntity.ok(ApiResult.ok(MyPageResponse.from(me)));
     }
 
-    /** 내 정보 수정(닉네임/프로필 이미지) */
     @Override
     public ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(UpdateMyInfoRequest request) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
-        // 서비스에서 수정 처리 후 응답 DTO 반환하도록 구현(추천)
         UpdateMyInfoResponse body = memberService.updateProfile(memberId, request);
         return ResponseEntity.ok(ApiResult.ok(body));
     }
