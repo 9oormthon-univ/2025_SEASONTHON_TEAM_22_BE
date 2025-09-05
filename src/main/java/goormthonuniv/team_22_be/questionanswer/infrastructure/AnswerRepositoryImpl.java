@@ -1,5 +1,6 @@
 package goormthonuniv.team_22_be.questionanswer.infrastructure;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -7,6 +8,9 @@ import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.questionanswer.domain.repository.AnswerRepositoryCustom;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -61,8 +65,6 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom {
                 .where(answer.member.id.eq(memberId))
                 .groupBy(date)
                 .fetch();
-
-        List.of()
     }
 
     @Override
@@ -78,5 +80,32 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom {
                 .fetchOne();
 
         return completedAnswers != null ? completedAnswers : 0L;
+    }
+
+    @Override
+    public Page<Tuple> findDailyAnswerRecords(Long memberId, Pageable pageable) {
+        DateTemplate<LocalDate> answerDate = Expressions.dateTemplate(
+                LocalDate.class,
+                "DATE({0})",
+                answer.createdAt
+        );
+
+        List<Tuple> results = jpaQueryFactory
+                .select(answerDate, answer.id.count())
+                .from(answer)
+                .where(answer.member.id.eq(memberId))
+                .groupBy(answerDate)
+                .orderBy(answerDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = jpaQueryFactory
+                .select(answerDate.countDistinct())
+                .from(answer)
+                .where(answer.member.id.eq(memberId))
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, total == null ? 0 : total);
     }
 }

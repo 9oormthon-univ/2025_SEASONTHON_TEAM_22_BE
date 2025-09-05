@@ -1,10 +1,12 @@
 package goormthonuniv.team_22_be.questionanswer.application;
 
+import com.querydsl.core.Tuple;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
+import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
 import goormthonuniv.team_22_be.questionanswer.domain.model.Answer;
 import goormthonuniv.team_22_be.questionanswer.domain.service.AnswerService;
@@ -12,16 +14,23 @@ import goormthonuniv.team_22_be.questionanswer.infrastructure.AnswerRepository;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import goormthonuniv.team_22_be.questioncard.infrastructure.QuestionCardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AnswerServiceImpl implements AnswerService {
+
+    private static final int DAILY_GOAL = 6;
 
     private final AnswerRepository answerRepository;
     private final MemberRepository memberRepository;
@@ -59,8 +68,8 @@ public class AnswerServiceImpl implements AnswerService {
         return answerRepository.countAnswersByMemberForToday(member, startOfDay, endOfDay);
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public ProgressStatusResponse getProgressStatus(Long memberId) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
@@ -76,12 +85,31 @@ public class AnswerServiceImpl implements AnswerService {
         return ProgressStatusResponse.from(totalTrainedSessions, completedAnswersToday, averageCompletion);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Page<DailyAnswerRecordResponse> getDailyAnswerRecords(Long memberId, Pageable pageable) {
+        Page<Tuple> tuples = answerRepository.findDailyAnswerRecords(memberId, pageable);
+
+        int target = DAILY_GOAL > 0 ? DAILY_GOAL : 6;
+
+        List<DailyAnswerRecordResponse> records = tuples.stream()
+                .map(tuple -> {
+                    LocalDate date = toLocalDate(tuple.get(0, Object.class));
+                    long answeredCount = Optional.ofNullable(tuple.get(1, Number.class))
+                            .map(Number::longValue)
+                            .orElse(0L);
+                    int completionRate = (int) Math.round(answeredCount * 100.0 / target);
+                    return new DailyAnswerRecordResponse(date, answeredCount, completionRate);
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(records, pageable, tuples.getTotalElements());
+    }
+
     private Long calculateAverageCompletion(List<Long> dailyCounts) {
         if (dailyCounts == null || dailyCounts.isEmpty()) {
             return 0L;
         }
-
-        final int DAILY_GOAL = 6;
 
         double average = dailyCounts.stream()
                 .mapToDouble(count -> Math.min(100.0, (double) count / DAILY_GOAL * 100))
@@ -89,5 +117,12 @@ public class AnswerServiceImpl implements AnswerService {
                 .orElse(0.0);
 
         return Math.round(average);
+    }
+
+    private LocalDate toLocalDate(Object rawDate) {
+        if (rawDate instanceof LocalDate ld) return ld;
+        if (rawDate instanceof LocalDateTime ldt) return ldt.toLocalDate();
+        if (rawDate instanceof java.sql.Date sqlDate) return sqlDate.toLocalDate();
+        throw new IllegalStateException("Unexpected date type: " + rawDate.getClass());
     }
 }

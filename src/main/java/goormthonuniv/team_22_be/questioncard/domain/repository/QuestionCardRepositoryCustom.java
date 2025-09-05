@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface QuestionCardRepositoryCustom {
 
     Optional<QuestionCard> findNextCard(Long currentId);
+
     Optional<QuestionCard> findPreviousCard(Long currentId);
 }
