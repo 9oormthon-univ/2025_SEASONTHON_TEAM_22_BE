@@ -29,11 +29,12 @@ public class EmotionRecordRepositoryImpl implements EmotionRecordRepositoryCusto
                         emotionRecord.member.id.eq(memberId),
                         emotionRecord.createdAt.between(startDate, endDate)
                 )
-                .fetchOne();
+                .groupBy(emotionRecord.emotionState)
+                .fetchFirst();
     }
 
     @Override
-    public Optional<EmotionRecord> findEmotionRecordByMemberIdAndMostEmotionState(Long memberId) {
+    public Optional<EmotionState> findMostEmotionStateByMemberId(Long memberId) {
         Tuple result = jpaQueryFactory
                 .select(emotionRecord.emotionState, emotionRecord.count())
                 .from(emotionRecord)
@@ -46,8 +47,6 @@ public class EmotionRecordRepositoryImpl implements EmotionRecordRepositoryCusto
             return Optional.empty();
         }
 
-        EmotionState mostEmotionState = result.get(emotionRecord.emotionState);
-
-        return Optional.of(EmotionRecord.create(null, mostEmotionState, null));
+        return Optional.ofNullable(result.get(emotionRecord.emotionState));
     }
 }

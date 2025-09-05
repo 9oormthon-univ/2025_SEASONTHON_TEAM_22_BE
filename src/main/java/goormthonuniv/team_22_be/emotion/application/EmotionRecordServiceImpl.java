@@ -60,9 +60,9 @@ public class EmotionRecordServiceImpl implements EmotionRecordService {
         LocalDateTime endDateTime = endOfWeek.atTime(LocalTime.MAX);
 
         Long count = emotionRecordJpaRepository.countByMemberIdAndCreatedAtBetween(memberId, startDateTime, endDateTime);
-        EmotionRecord mostEmotionRecord = emotionRecordJpaRepository.findEmotionRecordByMemberIdAndMostEmotionState(memberId)
+        EmotionState emotionState = emotionRecordJpaRepository.findMostEmotionStateByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EMOTION_RECORD_NOT_FOUND));
 
-        return MostEmotionWeekResponse.of(mostEmotionRecord.getEmotionState().name(), count);
+        return MostEmotionWeekResponse.of(emotionState.name(), count);
     }
 }
