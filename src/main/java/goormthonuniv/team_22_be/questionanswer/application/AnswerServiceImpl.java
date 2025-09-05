@@ -4,7 +4,7 @@ import com.querydsl.core.Tuple;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
-import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
+import goormthonuniv.team_22_be.member.domain.repository.MemberRepository;
 import goormthonuniv.team_22_be.questionanswer.application.dto.AnswerResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;

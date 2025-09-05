@@ -62,6 +62,10 @@ dependencies {
 
     // Liquibase
     implementation 'org.liquibase:liquibase-core'
+
+    // S3
+    implementation platform("software.amazon.awssdk:bom:2.25.52")
+    implementation "software.amazon.awssdk:s3"
 }
 
 tasks.named('test') {

@@ -2,7 +2,7 @@ package goormthonuniv.team_22_be.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import goormthonuniv.team_22_be.member.domain.model.Member;
-import goormthonuniv.team_22_be.member.application.service.MemberServiceImpl;
+import goormthonuniv.team_22_be.member.application.MemberServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
