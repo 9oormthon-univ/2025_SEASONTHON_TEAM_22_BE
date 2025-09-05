@@ -5,6 +5,7 @@ import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.member.infrastructure.MemberRepository;
+import goormthonuniv.team_22_be.questionanswer.application.dto.AnswerResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
@@ -102,6 +103,20 @@ public class AnswerServiceImpl implements AnswerService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(records, pageable, tuples.getTotalElements());
+    }
+
+    @Override
+    public List<AnswerResponse> getAnswersByDate(Long memberId, LocalDate date) {
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+
+        List<Answer> answers = answerRepository.findAnswersByDate(memberId, startOfDay, endOfDay);
+
+        return answers.stream()
+                .map(answer -> {
+                    return new AnswerResponse(answer.getQuestionCard().getCardType().getDescription(), answer.getQuestionCard().getContent(), answer.getContent());
+                })
+                .collect(Collectors.toList());
     }
 
     private Long calculateAverageCompletion(List<Long> dailyCounts) {
