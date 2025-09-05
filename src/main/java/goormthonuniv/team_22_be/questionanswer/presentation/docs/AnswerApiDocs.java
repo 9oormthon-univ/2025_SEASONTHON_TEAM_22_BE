@@ -2,6 +2,7 @@ package goormthonuniv.team_22_be.questionanswer.presentation.docs;
 
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
+import goormthonuniv.team_22_be.questionanswer.application.dto.AnswerResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
@@ -15,12 +16,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Tag(name = "Answer", description = "질문 답변 관련 API")
 public interface AnswerApiDocs {
 
     @Operation(
-            summary = "답변 등록",
-            description = "새로운 답변을 등록합니다.",
+            summary = "질문 카드 답변 등록",
+            description = "질문 카드의 새로운 답변을 등록합니다.",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -99,4 +103,22 @@ public interface AnswerApiDocs {
             }
     )
     ResponseEntity<ApiResult<PageResponse<DailyAnswerRecordResponse>>> getDailyRecords(Long memberId, Pageable pageable);
+
+    @Operation(
+            summary = "특정 날짜의 답변 목록 조회",
+            description = "사용자가 특정 날짜에 작성한 답변 목록을 조회합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "특정 날짜의 답변 목록 조회 성공",
+                            content = @Content(schema = @Schema(implementation = AnswerResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "멤버를 찾을 수 없음",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    )
+            }
+    )
+    ResponseEntity<ApiResult<List<AnswerResponse>>> getAnswersByDate(Long memberId, LocalDate date);
 }
