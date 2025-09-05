@@ -80,7 +80,7 @@ public interface MemberApiDocs {
     @Operation(
             summary = "마이페이지 정보 조회",
             description = "현재 로그인한 사용자의 마이페이지 정보를 조회합니다.",
-            security = { @SecurityRequirement(name = "bearerAuth") },
+            security = { @SecurityRequirement(name = "BearerAuth") },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
