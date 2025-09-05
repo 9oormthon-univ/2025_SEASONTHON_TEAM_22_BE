@@ -4,6 +4,7 @@ import goormthonuniv.team_22_be.auth.JwtAuthFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -45,6 +46,9 @@ public class SecurityConfig {
                                 "/api/v1/question-cards/**", // TODO 테스트용, 추후 삭제
                                 "/api/v1/answers/**" // TODO 테스트용, 추후 삭제
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/members/signup").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/members/login").permitAll()
+
                         .anyRequest().authenticated()
                 )
 
