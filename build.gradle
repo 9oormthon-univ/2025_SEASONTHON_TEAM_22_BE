@@ -63,6 +63,10 @@ dependencies {
     // Liquibase
     implementation 'org.liquibase:liquibase-core'
 
+    // S3
+    implementation platform("software.amazon.awssdk:bom:2.25.52")
+    implementation "software.amazon.awssdk:s3"
+
     // Web Push API
     implementation 'nl.martijndwars:web-push:5.1.1'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'

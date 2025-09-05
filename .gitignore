@@ -40,6 +40,7 @@ out/
 slow-mind-infra/.env
 slow-mind-infra/.env
 application-local.yml
+ngrok.yml
 application-local.properties
 
 ### Local Data ###
