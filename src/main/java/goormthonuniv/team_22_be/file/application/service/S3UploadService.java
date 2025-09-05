@@ -21,41 +21,44 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public Uploaded uploadProfileImage(Long memberId, MultipartFile file) throws IOException {
-        // 간단한 검증
-        if (file.isEmpty()) throw new IllegalArgumentException("빈 파일입니다.");
+    @Value("${cloud.aws.region}")
+    private String region;
+
+    public String uploadProfileImage(Long memberId, MultipartFile file) {
+        // 간단한 타입/사이즈 검증 (선택)
         String contentType = file.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
-            throw new IllegalArgumentException("이미지 파일만 업로드할 수 있습니다.");
+            throw new IllegalArgumentException("이미지 파일만 업로드 가능합니다.");
+        }
+        if (file.getSize() > 5 * 1024 * 1024) { // 5MB
+            throw new IllegalArgumentException("파일 용량(5MB)을 초과했습니다.");
         }
 
-        // 파일명/키 생성
-        String ext = extFromContentType(contentType);
+        String ext = guessExt(contentType);
         String key = "members/%d/profile/%s%s".formatted(memberId, UUID.randomUUID(), ext);
 
-        PutObjectRequest putReq = PutObjectRequest.builder()
+        PutObjectRequest put = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .contentType(contentType)
-                // 공개 버킷이 아니라면 ACL은 생략. 공개로 테스트하려면 다음 라인 주석 해제
-                //.acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
 
-        s3Client.putObject(putReq, RequestBody.fromBytes(file.getBytes()));
+        try {
+            s3Client.putObject(put, RequestBody.fromBytes(file.getBytes()));
+        } catch (Exception e) {
+            throw new RuntimeException("S3 업로드 실패: " + e.getMessage(), e);
+        }
 
-        // 접근 URL (퍼블릭 버킷이 아니면 이 URL로는 바로 보기 어려움)
-        String objectUrl = "https://%s.s3.amazonaws.com/%s".formatted(bucket, key);
-        return new Uploaded(key, objectUrl);
+        // 퍼블릭 접근 허용 버킷이면 이 URL로 바로 조회 가능
+        return "https://%s.s3.%s.amazonaws.com/%s".formatted(bucket, region, key);
     }
 
-    private String extFromContentType(String ct) {
-        return switch (ct) {
-            case "image/png"  -> ".png";
+    private String guessExt(String contentType) {
+        return switch (contentType) {
+            case "image/png" -> ".png";
             case "image/jpeg" -> ".jpg";
             case "image/webp" -> ".webp";
-            default -> "";
+            default -> ""; // 모르면 확장자 생략
         };
     }
-
-    public record Uploaded(String key, String url) {}
 }

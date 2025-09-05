@@ -7,6 +7,8 @@ import goormthonuniv.team_22_be.file.application.dto.PresignResponseDto;
 import goormthonuniv.team_22_be.file.application.service.S3PresignService;
 import goormthonuniv.team_22_be.file.application.service.S3UploadService;
 import goormthonuniv.team_22_be.member.application.dto.MemberResponse;
+import goormthonuniv.team_22_be.member.application.dto.UpdateMyInfoRequest;
+import goormthonuniv.team_22_be.member.application.dto.UpdateMyInfoResponse;
 import goormthonuniv.team_22_be.member.domain.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -68,12 +70,17 @@ public class FileController {
 
     /** 멀티파트 업로드 */
     @PostMapping(value = "/profile/upload", consumes = "multipart/form-data")
-    public ResponseEntity<ApiResult<UploadResponse>> uploadProfile(@RequestPart("file") MultipartFile file) throws Exception {
+    public ResponseEntity<ApiResult<UpdateMyInfoResponse>> uploadProfile(@RequestPart("file") MultipartFile file) throws Exception {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
-        var up = s3UploadService.uploadProfileImage(memberId, file);
 
-        return ResponseEntity.ok(ApiResult.ok(new UploadResponse(up.key(), up.url())));
+        String objectUrl = s3UploadService.uploadProfileImage(memberId, file);
+
+        UpdateMyInfoResponse updated = memberService.updateProfile(
+                memberId,
+                new UpdateMyInfoRequest(null, objectUrl)
+        );
+        return ResponseEntity.ok(ApiResult.ok(updated));
+
     }
 
-    public record UploadResponse(String key, String url) {}
 }
