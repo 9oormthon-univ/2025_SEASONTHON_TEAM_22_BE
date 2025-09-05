@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 public record LoginRequest(
         @Schema(description = "로그인 아이디(로컬용)", example = "mirme01")
         @NotBlank
-        String id,
+        String loginId,
 
         @Schema(description = "비밀번호", example = "P@ssw0rd!")
         @NotBlank
