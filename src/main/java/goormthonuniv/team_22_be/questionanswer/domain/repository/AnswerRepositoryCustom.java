@@ -17,7 +17,7 @@ public interface AnswerRepositoryCustom {
 
     List<Long> getDailyAnswerCounts(Long memberId);
 
-    Long getCompletedAnswersForToday(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+    Long getCompletedAnswers(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay);
 
     Page<Tuple> findDailyAnswerRecords(Long memberId, Pageable pageable);
 }

@@ -76,13 +76,13 @@ public class AnswerServiceImpl implements AnswerService {
 
         List<Long> dailyCounts = answerRepository.getDailyAnswerCounts(memberId);
 
-        Long completedAnswersToday = answerRepository.getCompletedAnswersForToday(memberId, startOfDay, endOfDay);
+        Long completedAnswers = answerRepository.getCompletedAnswers(memberId, startOfDay, endOfDay);
 
         Long totalTrainedSessions = (long) dailyCounts.size();
 
         Long averageCompletion = calculateAverageCompletion(dailyCounts);
 
-        return ProgressStatusResponse.from(totalTrainedSessions, completedAnswersToday, averageCompletion);
+        return ProgressStatusResponse.from(totalTrainedSessions, completedAnswers, averageCompletion);
     }
 
     @Transactional(readOnly = true)
