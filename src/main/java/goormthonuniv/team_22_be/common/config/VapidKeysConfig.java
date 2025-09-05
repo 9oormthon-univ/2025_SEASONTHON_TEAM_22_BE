@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "webpush.vapid")
+@ConfigurationProperties(prefix = "spring.vapid")
 public class VapidKeysConfig {
     private String publicKey;
     private String privateKey;

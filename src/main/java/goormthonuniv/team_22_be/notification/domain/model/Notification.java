@@ -4,8 +4,7 @@ import goormthonuniv.team_22_be.activity.domain.model.Activity;
 import goormthonuniv.team_22_be.common.utils.BaseTimeEntity;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +12,9 @@ import java.time.LocalDateTime;
 @Table(name = "notifications")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Notification extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
