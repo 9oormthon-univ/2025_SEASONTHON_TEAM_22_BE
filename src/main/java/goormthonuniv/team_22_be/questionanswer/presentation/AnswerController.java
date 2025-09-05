@@ -1,6 +1,7 @@
 package goormthonuniv.team_22_be.questionanswer.presentation;
 
 import goormthonuniv.team_22_be.common.response.ApiResult;
+import goormthonuniv.team_22_be.questionanswer.application.dto.AnswerResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/answers")
@@ -59,5 +63,12 @@ public class AnswerController implements AnswerApiDocs {
     ) {
         Page<DailyAnswerRecordResponse> dailyAnswerRecords = answerService.getDailyAnswerRecords(memberId, pageable);
         return ResponseEntity.ok(ApiResult.ok(PageResponse.of(dailyAnswerRecords)));
+    }
+
+    @GetMapping("/{memberId}/{date}")
+    @Override
+    public ResponseEntity<ApiResult<List<AnswerResponse>>> getAnswersByDate(@PathVariable Long memberId, @PathVariable LocalDate date) {
+        List<AnswerResponse> answers = answerService.getAnswersByDate(memberId, date);
+        return ResponseEntity.ok(ApiResult.ok(answers));
     }
 }

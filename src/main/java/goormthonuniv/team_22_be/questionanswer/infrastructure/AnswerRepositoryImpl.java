@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import goormthonuniv.team_22_be.member.domain.model.Member;
+import goormthonuniv.team_22_be.questionanswer.domain.model.Answer;
 import goormthonuniv.team_22_be.questionanswer.domain.repository.AnswerRepositoryCustom;
 import goormthonuniv.team_22_be.questioncard.domain.model.QuestionCard;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static goormthonuniv.team_22_be.questionanswer.domain.model.QAnswer.answer;
+import static goormthonuniv.team_22_be.questioncard.domain.model.QQuestionCard.questionCard;
 
 @Repository
 @RequiredArgsConstructor
@@ -68,14 +70,12 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom {
     }
 
     @Override
-    public Long getCompletedAnswersForToday(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay) {
+    public Long getCompletedAnswers(Long memberId) {
         Long completedAnswers = jpaQueryFactory
                 .select(answer.id.count())
                 .from(answer)
                 .where(
-                        answer.member.id.eq(memberId),
-                        answer.createdAt.goe(startOfDay),
-                        answer.createdAt.lt(endOfDay)
+                        answer.member.id.eq(memberId)
                 )
                 .fetchOne();
 
@@ -107,5 +107,16 @@ public class AnswerRepositoryImpl implements AnswerRepositoryCustom {
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, total == null ? 0 : total);
+    }
+
+    @Override
+    public List<Answer> findAnswersByDate(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay) {
+        return jpaQueryFactory
+                .selectFrom(answer)
+                .join(answer.questionCard, questionCard).fetchJoin()
+                .where(
+                        answer.member.id.eq(memberId),
+                        answer.createdAt.between(startOfDay, endOfDay))
+                .fetch();
     }
 }

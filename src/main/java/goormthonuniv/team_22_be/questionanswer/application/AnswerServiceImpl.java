@@ -5,6 +5,7 @@ import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
 import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.member.domain.repository.MemberRepository;
+import goormthonuniv.team_22_be.questionanswer.application.dto.AnswerResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyAnswerRecordResponse;
 import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
@@ -71,18 +72,15 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional(readOnly = true)
     @Override
     public ProgressStatusResponse getProgressStatus(Long memberId) {
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
-
         List<Long> dailyCounts = answerRepository.getDailyAnswerCounts(memberId);
 
-        Long completedAnswersToday = answerRepository.getCompletedAnswersForToday(memberId, startOfDay, endOfDay);
+        Long completedAnswers = answerRepository.getCompletedAnswers(memberId);
 
         Long totalTrainedSessions = (long) dailyCounts.size();
 
         Long averageCompletion = calculateAverageCompletion(dailyCounts);
 
-        return ProgressStatusResponse.from(totalTrainedSessions, completedAnswersToday, averageCompletion);
+        return ProgressStatusResponse.from(totalTrainedSessions, completedAnswers, averageCompletion);
     }
 
     @Transactional(readOnly = true)
@@ -99,9 +97,25 @@ public class AnswerServiceImpl implements AnswerService {
                     int completionRate = (int) Math.round(answeredCount * 100.0 / DAILY_GOAL);
                     return new DailyAnswerRecordResponse(date, answeredCount, completionRate);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return new PageImpl<>(records, pageable, tuples.getTotalElements());
+    }
+
+    @Override
+    public List<AnswerResponse> getAnswersByDate(Long memberId, LocalDate date) {
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+
+        List<Answer> answers = answerRepository.findAnswersByDate(memberId, startOfDay, endOfDay);
+
+        return answers.stream()
+                .map(answer -> new AnswerResponse(
+                        answer.getQuestionCard().getCardType().getDescription(),
+                        answer.getQuestionCard().getContent(),
+                        answer.getContent())
+                )
+                .toList();
     }
 
     private Long calculateAverageCompletion(List<Long> dailyCounts) {
