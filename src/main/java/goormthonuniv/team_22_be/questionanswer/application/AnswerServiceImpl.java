@@ -90,15 +90,13 @@ public class AnswerServiceImpl implements AnswerService {
     public Page<DailyAnswerRecordResponse> getDailyAnswerRecords(Long memberId, Pageable pageable) {
         Page<Tuple> tuples = answerRepository.findDailyAnswerRecords(memberId, pageable);
 
-        int target = DAILY_GOAL > 0 ? DAILY_GOAL : 6;
-
         List<DailyAnswerRecordResponse> records = tuples.stream()
                 .map(tuple -> {
                     LocalDate date = toLocalDate(tuple.get(0, Object.class));
                     long answeredCount = Optional.ofNullable(tuple.get(1, Number.class))
                             .map(Number::longValue)
                             .orElse(0L);
-                    int completionRate = (int) Math.round(answeredCount * 100.0 / target);
+                    int completionRate = (int) Math.round(answeredCount * 100.0 / DAILY_GOAL);
                     return new DailyAnswerRecordResponse(date, answeredCount, completionRate);
                 })
                 .collect(Collectors.toList());
