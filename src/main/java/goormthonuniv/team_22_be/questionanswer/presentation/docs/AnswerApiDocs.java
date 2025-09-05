@@ -4,6 +4,7 @@ import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.questionanswer.application.dto.CreateAnswerRequest;
 import goormthonuniv.team_22_be.questionanswer.application.dto.DailyProgressResponse;
+import goormthonuniv.team_22_be.questionanswer.application.dto.ProgressStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,4 +60,23 @@ public interface AnswerApiDocs {
             }
     )
     ResponseEntity<ApiResult<DailyProgressResponse>> getDailyProgress(Long memberId);
+
+    @Operation(
+            summary = "마음 훈련 기록 지행 현황 조회",
+            description = "사용자의 마음 훈련 기록 현황을 조회합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "마음 훈련 기록 현황 조회 성공",
+                            content = @Content(schema = @Schema(implementation = ProgressStatusResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "멤버를 찾을 수 없음",
+                            content = @Content(schema = @Schema(implementation = CustomException.class))
+                    )
+            }
+    )
+    ResponseEntity<ApiResult<ProgressStatusResponse>> getProgressStatus(Long memberId);
+
 }

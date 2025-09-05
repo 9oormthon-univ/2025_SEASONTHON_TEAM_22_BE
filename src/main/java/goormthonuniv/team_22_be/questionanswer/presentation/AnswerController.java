@@ -32,6 +32,7 @@ public class AnswerController implements AnswerApiDocs {
     @PostMapping("/{memberId}/{questionCardId}")
     public ResponseEntity<ApiResult<Long>> createAnswer(@PathVariable Long memberId, @PathVariable Long questionCardId,
                                                   @RequestBody CreateAnswerRequest request
+                                                        @RequestBody CreateAnswerRequest request
     ) {
         Long answerId = answerService.createAnswer(memberId, questionCardId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResult.ok(answerId));
@@ -44,6 +45,7 @@ public class AnswerController implements AnswerApiDocs {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResult.ok(DailyProgressResponse.from(dailyProgress)));
     }
 
+    @Override
     @GetMapping("/{memberId}/progress-status")
     public ResponseEntity<ApiResult<ProgressStatusResponse>> getProgressStatus(@PathVariable Long memberId) {
         ProgressStatusResponse response = answerService.getProgressStatus(memberId);
