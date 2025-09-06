@@ -4,9 +4,12 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import goormthonuniv.team_22_be.emotion.application.dto.EmotionRecordResponse;
 import goormthonuniv.team_22_be.emotion.domain.model.EmotionState;
 import goormthonuniv.team_22_be.emotion.domain.repository.EmotionRecordRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -21,6 +24,28 @@ import static goormthonuniv.team_22_be.emotion.domain.model.QEmotionRecord.emoti
 public class EmotionRecordRepositoryImpl implements EmotionRecordRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public PageImpl<EmotionRecordResponse> findAllByMemberId(Long memberId, int page, int size) {
+        List<EmotionRecordResponse> content = jpaQueryFactory
+                .selectFrom(emotionRecord)
+                .where(emotionRecord.member.id.eq(memberId))
+                .orderBy(emotionRecord.createdAt.desc())
+                .offset((long) page * size)
+                .limit(size)
+                .fetch()
+                .stream()
+                .map(EmotionRecordResponse::from)
+                .toList();
+
+        Long total = jpaQueryFactory
+                .select(emotionRecord.count())
+                .from(emotionRecord)
+                .where(emotionRecord.member.id.eq(memberId))
+                .fetchOne();
+
+        return new PageImpl<>(content, PageRequest.of(page, size), total != null ? total : 0);
+    }
 
     @Override
     public Long countByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate) {

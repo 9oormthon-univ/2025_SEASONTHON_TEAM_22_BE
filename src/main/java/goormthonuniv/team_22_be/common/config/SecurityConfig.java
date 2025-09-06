@@ -41,12 +41,13 @@ public class SecurityConfig {
                                 "/api/v1/members/signup",
                                 "/api/v1/members/login",
                                 "/api/v1/notifications/vapid-public-key",
-
                                 "/api/v1/activities/**",
                                 "/api/v1/posts/**",
                                 "/api/v1/emotions/**",
                                 "/api/v1/question-cards/**",
-                                "/api/v1/answers/**"
+                                "/api/v1/answers/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui.html/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/members/signup").permitAll()
                         .requestMatchers("/api/v1/notifications/vapid-public-key").permitAll() // TODO 테스트

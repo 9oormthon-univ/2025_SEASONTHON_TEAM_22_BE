@@ -13,7 +13,7 @@ public interface EmotionRecordService {
 
     Long createEmotionRecord(Long memberId, CreateEmotionRecordRequest request);
 
-    Page<EmotionRecordResponse> getEmotionRecords(Pageable pageable);
+    Page<EmotionRecordResponse> getEmotionRecords(Long memberId, Pageable pageable);
 
     MostEmotionWeekResponse getMostEmotionalThisWeek(Long memberId);
 

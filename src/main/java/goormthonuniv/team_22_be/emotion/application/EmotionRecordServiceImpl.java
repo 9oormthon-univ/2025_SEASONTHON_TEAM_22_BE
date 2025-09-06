@@ -53,9 +53,8 @@ public class EmotionRecordServiceImpl implements EmotionRecordService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<EmotionRecordResponse> getEmotionRecords(Pageable pageable) {
-        Page<EmotionRecord> emotionRecordPage = emotionRecordRepository.findAll(pageable);
-        return emotionRecordPage.map(EmotionRecordResponse::from);
+    public Page<EmotionRecordResponse> getEmotionRecords(Long memberId, Pageable pageable) {
+        return emotionRecordRepository.findAllByMemberId(memberId, pageable.getPageNumber(), pageable.getPageSize());
     }
 
     @Transactional(readOnly = true)

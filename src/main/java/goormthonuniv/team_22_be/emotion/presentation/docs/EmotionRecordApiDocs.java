@@ -60,7 +60,7 @@ public interface EmotionRecordApiDocs {
                     )
             }
     )
-    ResponseEntity<ApiResult<PageResponse<EmotionRecordResponse>>> getEmotionRecords(Pageable pageable);
+    ResponseEntity<ApiResult<PageResponse<EmotionRecordResponse>>> getEmotionRecords(Long memberId, Pageable pageable);
 
     @Operation(
             summary = "이번 주 가장 많이 느낀 감정 조회",
