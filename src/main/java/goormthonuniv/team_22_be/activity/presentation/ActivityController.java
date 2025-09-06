@@ -6,7 +6,6 @@ import goormthonuniv.team_22_be.activity.application.dto.ActivityResponseDto;
 import goormthonuniv.team_22_be.activity.domain.repository.ActivityApplicationRepository;
 import goormthonuniv.team_22_be.activity.presentation.docs.ActivityApiDocs;
 import goormthonuniv.team_22_be.common.response.ApiResult;
-import goormthonuniv.team_22_be.common.security.AuthUtils;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -80,11 +79,8 @@ public class ActivityController implements ActivityApiDocs {
     }
 
     @Override
-    public PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-        var page = applicationRepository.findAllByMember_Id(memberId, pageable)
-                .map(app -> ActivityResponseDto.from(app.getActivity()));
-        return PageResponse.of(page);
-
+    public ResponseEntity<ApiResult<PageResponse<ActivityResponseDto>>> listMyApplied(Pageable pageable) {
+        var body = activityService.listMyApplied(pageable);
+        return ResponseEntity.ok(ApiResult.ok(body));
     }
 }

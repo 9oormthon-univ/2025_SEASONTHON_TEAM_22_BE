@@ -22,6 +22,4 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>, JpaSp
      * ALONE, TOGETHER 등
      */
     Page<Activity> findByActivityType(ActivityType type, Pageable pageable);
-
-    Page<ActivityApplication> findAllByMember_Id(Long memberId, Pageable pageable);
 }

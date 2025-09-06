@@ -119,10 +119,10 @@ public interface ActivityApiDocs {
 
     @Operation(
             summary = "내가 신청한 활동",
-            description = "내가 신청한 활동 페이징",
+            description = "로그인한 사용자가 신청한 활동을 페이지네이션으로 반환합니다.",
             security = {@SecurityRequirement(name = "BearerAuth")}
     )
     @GetMapping("/me/applied")
-    PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable);
+    ResponseEntity<ApiResult<PageResponse<ActivityResponseDto>>> listMyApplied(Pageable pageable);
 
 }
