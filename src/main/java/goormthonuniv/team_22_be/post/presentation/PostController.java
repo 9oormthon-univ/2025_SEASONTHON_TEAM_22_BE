@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -67,6 +68,21 @@ public class PostController implements PostApiDocs {
     @Override
     public ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> listMyLiked(Pageable pageable) {
         var body = postService.listMyLiked(pageable);
+        return ResponseEntity.ok(ApiResult.ok(body));
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> getMyPosts(
+            Pageable pageable,
+            @RequestParam(required = false) String category
+    ) {
+        var body = postService.listMyPosts(pageable, category);
+        return ResponseEntity.ok(ApiResult.ok(body));
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> getMyReviews(Pageable pageable) {
+        var body = postService.listMyReviews(pageable);
         return ResponseEntity.ok(ApiResult.ok(body));
     }
 

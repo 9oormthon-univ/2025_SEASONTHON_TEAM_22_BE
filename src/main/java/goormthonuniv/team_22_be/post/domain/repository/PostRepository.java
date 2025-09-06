@@ -13,6 +13,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByCategory(PostCategory category, Pageable pageable);
     Page<Post> findByActivity_Id(Long activityId, Pageable pageable);
     Page<Post> findByMember_Id(Long memberId, Pageable pageable);
+    Page<Post> findByMember_IdAndCategory(Long memberId, PostCategory category, Pageable pageable);
+
     boolean existsByIdAndMember_Id(Long postId, Long memberId);
 
     @Query("""

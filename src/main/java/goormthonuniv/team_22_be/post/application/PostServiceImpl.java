@@ -132,6 +132,44 @@ public class PostServiceImpl implements PostService {
         }
 
     @Override
+    public PageResponse<PostResponseDto> listMyPosts(Pageable pageable, String category) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+
+        if (category != null && !category.isBlank()) {
+            PostCategory cat = parseCategoryOrThrow(category);
+            return PageResponse.of(
+                    postRepository.findByMember_IdAndCategory(memberId, cat, pageable)
+                            .map(PostResponseDto::from)
+            );
+        }
+
+        return PageResponse.of(
+                postRepository.findByMember_Id(memberId, pageable)
+                        .map(PostResponseDto::from)
+        );
+
+    }
+
+    private PostCategory parseCategoryOrThrow(String category) {
+        try {
+            return PostCategory.valueOf(category.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.BAD_REQUEST, "유효하지 않은 카테고리: " + category);
+        }
+
+    }
+
+    @Override
+    public PageResponse<PostResponseDto> listMyReviews(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        return PageResponse.of(
+                postRepository.findByMember_IdAndCategory(memberId, PostCategory.REVIEW, pageable)
+                        .map(PostResponseDto::from)
+        );
+
+    }
+
+    @Override
     public PostResponseDto update(Long postId, PostUpdateDto dto) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
