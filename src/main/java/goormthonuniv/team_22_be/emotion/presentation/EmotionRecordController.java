@@ -1,6 +1,7 @@
 package goormthonuniv.team_22_be.emotion.presentation;
 
 import goormthonuniv.team_22_be.common.response.ApiResult;
+import goormthonuniv.team_22_be.common.security.AuthMember;
 import goormthonuniv.team_22_be.emotion.application.dto.CreateEmotionRecordRequest;
 import goormthonuniv.team_22_be.emotion.application.dto.EmotionRecordResponse;
 import goormthonuniv.team_22_be.emotion.application.dto.EmotionWeeklyStatsResponse;
@@ -32,9 +33,9 @@ public class EmotionRecordController implements EmotionRecordApiDocs {
 
     private final EmotionRecordService emotionRecordService;
 
-    @PostMapping
+    @PostMapping("/{memberId}")
     @Override
-    public ResponseEntity<ApiResult<Long>> createEmotionRecord(@RequestParam(name = "member-id") Long memberId, @RequestBody CreateEmotionRecordRequest request) {
+    public ResponseEntity<ApiResult<Long>> createEmotionRecord(@PathVariable Long memberId, @RequestBody CreateEmotionRecordRequest request) {
         Long id = emotionRecordService.createEmotionRecord(memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResult.ok(id));
     }

@@ -17,6 +17,7 @@ public record PostCreateDto(
         String content,
 
         @Schema(description = "리뷰일 때만 필수") Long activityId,
+
         @Schema(description = "리뷰일 때만 1 ~ 5")
         @Min(1) @Max(5) Integer rating
 

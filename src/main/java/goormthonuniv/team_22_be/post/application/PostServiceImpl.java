@@ -1,6 +1,7 @@
 package goormthonuniv.team_22_be.post.application;
 
 import goormthonuniv.team_22_be.activity.domain.model.Activity;
+import goormthonuniv.team_22_be.activity.domain.repository.ActivityRepository;
 import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
 import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
 import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
@@ -27,6 +28,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
+    private final ActivityRepository activityRepository;
 
     /**
      * 게시글 list 조회 (파라미터 없으면 전체 게시글 list return)
@@ -51,7 +53,7 @@ public class PostServiceImpl implements PostService {
             return PageResponse.of(postRepository.findByCategory(cat, pageable).map(PostResponseDto::from));
         }
         if (activityId != null) {
-            return PageResponse.of(postRepository.findByActivity_Id(memberId, pageable).map(PostResponseDto::from));
+            return PageResponse.of(postRepository.findByActivity_Id(activityId, pageable).map(PostResponseDto::from));
         }
         if (memberId != null) {
             return PageResponse.of(postRepository.findByMember_Id(memberId, pageable).map(PostResponseDto::from));
@@ -84,41 +86,95 @@ public class PostServiceImpl implements PostService {
         // 현재 로그인 사용자 가져오기
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
-        // 리뷰일 때 activity_id, rating 필요 로직
+        long rating = 0L;
+        Activity activity = null;
+
         if (dto.postCategory() == PostCategory.REVIEW) {
-            if(dto.activityId() == null) {
+            // 리뷰면 activityId와 rating 필수
+            if (dto.activityId() == null) {
                 throw new CustomException(ErrorCode.BAD_REQUEST, "리뷰 게시글은 activityId가 필요합니다.");
             }
-            if(dto.rating() == null) {
+            if (dto.rating() == null) {
                 throw new CustomException(ErrorCode.BAD_REQUEST, "리뷰 게시글은 rating이 필요합니다.");
             }
+
+            // 활동 존재 검증
+            activity = activityRepository.findById(dto.activityId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "활동을 찾을 수 없습니다."));
+
+            rating = dto.rating().longValue();
+        } else {
+            // 리뷰가 아니면 activity 연동 없음(= null)
+            activity = null;
+            rating = 0L; // NOT NULL 컬럼이면 0으로 저장
         }
 
         Post post = Post.create(
                 Member.builder().id(memberId).build(),
-                dto.activityId() != null ? Activity.builder().id(dto.activityId()).build() : null,
+                activity, // null 또는 실제 존재하는 Activity
                 dto.postCategory(),
                 0L,
-                Long.valueOf(dto.postCategory() == PostCategory.REVIEW ? dto.rating() : null),
+                rating,
                 dto.title(),
                 dto.content()
         );
         return PostResponseDto.from(postRepository.save(post));
     }
 
-    /**
-     * 게시글 수정
-     * @param id
-     * @param dto
-     * @return
-     */
     @Override
-    public PostResponseDto update(Long id, PostUpdateDto dto) {
+    public PageResponse<PostResponseDto> listMyLiked(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        return PageResponse.of(
+                postRepository.findLikedByMember(memberId, pageable)
+                        .map(PostResponseDto::from)
+        );
 
+        }
+
+    @Override
+    public PageResponse<PostResponseDto> listMyPosts(Pageable pageable, String category) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "게시글을 찾을 수 없습니다. id = " + id));
+        if (category != null && !category.isBlank()) {
+            PostCategory cat = parseCategoryOrThrow(category);
+            return PageResponse.of(
+                    postRepository.findByMember_IdAndCategory(memberId, cat, pageable)
+                            .map(PostResponseDto::from)
+            );
+        }
+
+        return PageResponse.of(
+                postRepository.findByMember_Id(memberId, pageable)
+                        .map(PostResponseDto::from)
+        );
+
+    }
+
+    private PostCategory parseCategoryOrThrow(String category) {
+        try {
+            return PostCategory.valueOf(category.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.BAD_REQUEST, "유효하지 않은 카테고리: " + category);
+        }
+
+    }
+
+    @Override
+    public PageResponse<PostResponseDto> listMyReviews(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        return PageResponse.of(
+                postRepository.findByMember_IdAndCategory(memberId, PostCategory.REVIEW, pageable)
+                        .map(PostResponseDto::from)
+        );
+
+    }
+
+    @Override
+    public PostResponseDto update(Long postId, PostUpdateDto dto) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "게시글을 찾을 수 없습니다. id = " + postId));
 
         if (!post.getMember().getId().equals(memberId)) {
             throw new CustomException(ErrorCode.FORBIDDEN, "자신의 게시글만 수정할 수 있습니다.");
@@ -128,6 +184,7 @@ public class PostServiceImpl implements PostService {
 
         return PostResponseDto.from(post);
     }
+
 
     /**
      * 게시글 삭제

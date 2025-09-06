@@ -7,10 +7,21 @@ import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
+
     PageResponse<PostResponseDto> list(Pageable pageable, String category, Long activityId, Long memberId);
     PostResponseDto get(Long id);
+    PostResponseDto update (Long postId, PostUpdateDto dto);
     PostResponseDto create(PostCreateDto dto);
-    PostResponseDto update(Long id, PostUpdateDto dto);
+    PageResponse<PostResponseDto> listMyLiked(Pageable pageable);
+
+    // 내가 쓴 글
+    PageResponse<PostResponseDto> listMyPosts(Pageable pageable, String category);
+
+    // 내가 쓴 후기만
+    PageResponse<PostResponseDto> listMyReviews(Pageable pageable);
+
+
+
     void delete(Long id);
     void like(Long id);
     void unlike(Long id);

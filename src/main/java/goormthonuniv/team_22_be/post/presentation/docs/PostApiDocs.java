@@ -105,4 +105,33 @@ public interface PostApiDocs {
     )
     @DeleteMapping("/{id}/like")
     ResponseEntity<ApiResult<Void>> unlike(@PathVariable Long id);
+
+    @Operation(
+            summary = "내가 좋아요 누른 게시글",
+            description = "REVIEW , POST 로 나눠서 처리",
+            security = { @SecurityRequirement(name = "BearerAuth") }
+    )
+    @GetMapping("/me/liked")
+    ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> listMyLiked(Pageable pageable);
+
+
+    @Operation(
+            summary = "내가 쓴 게시글 조회",
+            description = "category 파라미터로 필터링 가능(예: REVIEW). 없으면 전체 반환.",
+            security = @SecurityRequirement(name = "BearerAuth")
+    )
+    @GetMapping("/me")
+    ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> getMyPosts(
+            Pageable pageable,
+            @Parameter(description = "카테고리(예: REVIEW). 미지정 시 전체") String category
+    );
+
+    @Operation(
+            summary = "내가 쓴 후기만 조회",
+            description = "카테고리 REVIEW에 해당하는 게시글만 반환.",
+            security = @SecurityRequirement(name = "BearerAuth")
+    )
+    @GetMapping("/reviews")
+    ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> getMyReviews(Pageable pageable);
+
 }
