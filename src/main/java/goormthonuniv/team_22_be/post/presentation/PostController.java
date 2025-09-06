@@ -73,7 +73,7 @@ public class PostController implements PostApiDocs {
         return ResponseEntity.ok(ApiResult.ok());
     }
 
-    @PostMapping("/{postId}/like/{memberId}")
+    @DeleteMapping("/{postId}/like/{memberId}")
     @Override
     public ResponseEntity<ApiResult<Void>> unlike(@PathVariable Long memberId, @PathVariable Long postId) {
         postService.unlike(memberId, postId);
