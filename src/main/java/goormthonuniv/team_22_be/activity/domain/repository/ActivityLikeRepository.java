@@ -1,6 +1,8 @@
 package goormthonuniv.team_22_be.activity.domain.repository;
 
 import goormthonuniv.team_22_be.activity.domain.model.ActivityLike;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ActivityLikeRepository extends JpaRepository<ActivityLike, Long> {
@@ -11,5 +13,7 @@ public interface ActivityLikeRepository extends JpaRepository<ActivityLike, Long
 
     /** 찜 해제 */
     void deleteByMember_IdAndActivity_Id(Long memberId, Long activityId);
+
+    Page<ActivityLike> findAllByMember_Id(Long memberId, Pageable pageable);
 
 }

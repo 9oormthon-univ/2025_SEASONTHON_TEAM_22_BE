@@ -121,6 +121,13 @@ public class ActivityServiceImpl implements ActivityService {
         likeRepository.deleteByMember_IdAndActivity_Id(memberId, activityId);
     }
 
+    @Override
+    public PageResponse<ActivityResponseDto> listMyLiked(Long memberId, Pageable pageable) {
+        var page = likeRepository.findAllByMember_Id(memberId, pageable)
+                .map(like -> ActivityResponseDto.from(like.getActivity()));
+        return PageResponse.of(page);
+    }
+
     /* ===== 신청 ===== */
 
     @Override

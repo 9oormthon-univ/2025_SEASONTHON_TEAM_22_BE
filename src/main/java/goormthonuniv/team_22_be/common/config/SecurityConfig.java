@@ -31,20 +31,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/health", "/error").permitAll()
-                        // ✅ Swagger
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        // ✅ 공개하고 싶은 API 경로들 (프론트가 토큰 없이 쓰는 곳)
                         .requestMatchers(
                                 "/api/v1/members/signup",
                                 "/api/v1/members/login",
                                 "/api/v1/notifications/vapid-public-key",
 
-                                // 필요시 임시 오픈
                                 "/api/v1/activities/**",
                                 "/api/v1/posts/**",
                                 "/api/v1/emotions/**",

@@ -47,6 +47,14 @@ public interface ActivityApiDocs {
     @DeleteMapping("/{id}/like/{memberId}")
     ResponseEntity<ApiResult<Void>> unlike(@PathVariable Long id, @PathVariable Long memberId);
 
+    @Operation(summary = "내가 찜한 활동 페이징")
+    @GetMapping("/{member_id}/liked")
+    ResponseEntity<ApiResult<PageResponse<ActivityResponseDto>>> listMyLiked(
+            @PathVariable("member_id") Long memberId,
+            @ParameterObject Pageable pageable
+    );
+
+
     // ----- 신청 / 신청 취소 -----
 
     @Operation(summary = "활동 신청")

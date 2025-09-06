@@ -78,4 +78,11 @@ public class ActivityController implements ActivityApiDocs {
         var page = activityService.listMyApplied(memberId, pageable);
         return ResponseEntity.ok(ApiResult.ok(page));
     }
+
+    @Override
+    public ResponseEntity<ApiResult<PageResponse<ActivityResponseDto>>> listMyLiked(Long memberId, Pageable pageable) {
+        var page = activityService.listMyLiked(memberId, pageable);
+        return ResponseEntity.ok(ApiResult.ok(page));
+    }
+
 }

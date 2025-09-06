@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface ActivityService {
     PageResponse<?> list(Pageable pageable);
+    PageResponse<ActivityResponseDto> listMyLiked(Long memberId, Pageable pageable);
+
     ActivityResponseDto get(Long id);
     ActivityResponseDto create(ActivityRequestDto req);
     ActivityResponseDto update(Long id, ActivityRequestDto req);
