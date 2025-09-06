@@ -17,18 +17,17 @@ public class MemberController implements MemberApiDocs {
 
     private final MemberService memberService;
 
-    /** 자체 회원가입 + 즉시 로그인(JWT 발급) */
     @Override
-    public ResponseEntity<ApiResult<AuthResponse>> signupMember(SignUpRequest request) {
-        AuthResponse response = memberService.register(request);
+    public ResponseEntity<ApiResult<MemberResponse>> signupMember(SignUpRequest request) {
+        MemberResponse response = memberService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResult.created(response));
     }
 
-    /** 자체 로그인 */
     @Override
-    public ResponseEntity<ApiResult<AuthResponse>> login(LoginRequest request) {
-        AuthResponse response = memberService.login(request);
-        return ResponseEntity.ok(ApiResult.ok(response));
+    public ResponseEntity<ApiResult<MemberResponse>> login(LoginRequest request) {
+        MemberResponse member = memberService.login(request);
+        return ResponseEntity.ok(ApiResult.ok(member));
+
     }
 
     /** 내 마이페이지 조회 */

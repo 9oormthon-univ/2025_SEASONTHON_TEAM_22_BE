@@ -3,6 +3,7 @@ package goormthonuniv.team_22_be.member.presentation.docs;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
 import goormthonuniv.team_22_be.member.application.dto.*;
+import goormthonuniv.team_22_be.member.domain.model.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +30,7 @@ public interface MemberApiDocs {
                     @ApiResponse(
                             responseCode = "201",
                             description = "회원가입 성공",
-                            content = @Content(schema = @Schema(implementation = AuthResponse.class))
+                            content = @Content(schema = @Schema(implementation = MemberResponse.class))
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -44,7 +45,7 @@ public interface MemberApiDocs {
             }
     )
     @PostMapping("/signup")
-    ResponseEntity<ApiResult<AuthResponse>> signupMember(
+    ResponseEntity<ApiResult<MemberResponse>> signupMember(
             @Valid @RequestBody SignUpRequest request
     );
 
@@ -58,7 +59,7 @@ public interface MemberApiDocs {
                     @ApiResponse(
                             responseCode = "200",
                             description = "로그인 성공",
-                            content = @Content(schema = @Schema(implementation = AuthResponse.class))
+                            content = @Content(schema = @Schema(implementation = MemberResponse.class))
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -73,7 +74,7 @@ public interface MemberApiDocs {
             }
     )
     @PostMapping("/login")
-    ResponseEntity<ApiResult<AuthResponse>> login(
+    ResponseEntity<ApiResult<MemberResponse>> login(
             @Valid @RequestBody LoginRequest request
     );
 

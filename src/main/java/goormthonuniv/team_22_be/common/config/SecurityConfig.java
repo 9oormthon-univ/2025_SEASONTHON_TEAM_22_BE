@@ -29,7 +29,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
@@ -74,7 +74,8 @@ public class SecurityConfig {
         var config = new org.springframework.web.cors.CorsConfiguration();
         config.setAllowedOrigins(java.util.List.of(
                 "http://localhost:3000",
-                "https://slowmind.ngrok.app"
+                "https://slowmind.ngrok.app",
+                "https://slowmind.netlify.app"
         ));
         config.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         config.setAllowedHeaders(java.util.List.of("*"));

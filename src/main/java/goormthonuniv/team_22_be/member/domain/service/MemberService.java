@@ -7,8 +7,8 @@ public interface MemberService {
     Member upsertBySocial(String provider, String providerUserId);
     Member getByIdOrThrow(Long memberId);
 
-    AuthResponse register(SignUpRequest request);
-    AuthResponse login(LoginRequest request);
+    MemberResponse register(SignUpRequest request);
+    MemberResponse login(LoginRequest request);
 
     UpdateMyInfoResponse updateProfile(Long memberId, UpdateMyInfoRequest request);
 }

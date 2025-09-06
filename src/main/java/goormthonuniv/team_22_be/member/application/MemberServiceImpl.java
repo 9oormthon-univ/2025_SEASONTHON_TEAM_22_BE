@@ -1,10 +1,8 @@
 // src/main/java/goormthonuniv/team_22_be/member/application/MemberServiceImpl.java
 package goormthonuniv.team_22_be.member.application;
 
-import goormthonuniv.team_22_be.auth.JwtProvider;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
-import goormthonuniv.team_22_be.member.application.dto.AuthResponse;
 import goormthonuniv.team_22_be.member.application.dto.LoginRequest;
 import goormthonuniv.team_22_be.member.application.dto.MemberResponse;
 import goormthonuniv.team_22_be.member.application.dto.MyPageResponse;
@@ -27,7 +25,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
 
     // ===== 소셜 로그인 지원 (OAuth2SuccessHandler 에서 사용) =====
     @Transactional
@@ -50,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 
     // ===== 자체 회원가입 → 즉시 JWT 발급 =====
     @Override
-    public AuthResponse register(SignUpRequest request) {
+    public MemberResponse register(SignUpRequest request) {
         if (memberRepository.existsByEmail(request.email())) {
             throw new CustomException(ErrorCode.CONFLICT, "이미 사용 중인 이메일입니다.");
         }
@@ -69,14 +66,13 @@ public class MemberServiceImpl implements MemberService {
                         .build()
         );
 
-        String token = jwtProvider.createAccessToken(saved);
-        return AuthResponse.of(MemberResponse.from(saved), token);
+        return MemberResponse.from(saved);
     }
 
     // ===== 자체 로그인 → JWT 발급 =====
     @Override
     @Transactional(readOnly = true)
-    public AuthResponse login(LoginRequest request) {
+    public MemberResponse login(LoginRequest request) {
         // 로컬 아이디로만 로그인
         Member m = memberRepository.findByProviderAndProviderUserId("LOCAL", request.loginId())
                 .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED, "계정을 찾을 수 없습니다."));
@@ -85,8 +81,7 @@ public class MemberServiceImpl implements MemberService {
             throw new CustomException(ErrorCode.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
-        String token = jwtProvider.createAccessToken(m);
-        return AuthResponse.of(MemberResponse.from(m), token);
+        return MemberResponse.from(m);
     }
 
     @Override
