@@ -3,8 +3,11 @@ package goormthonuniv.team_22_be.activity.presentation;
 import goormthonuniv.team_22_be.activity.application.service.ActivityService;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityResponseDto;
+import goormthonuniv.team_22_be.activity.domain.repository.ActivityApplicationRepository;
 import goormthonuniv.team_22_be.activity.presentation.docs.ActivityApiDocs;
 import goormthonuniv.team_22_be.common.response.ApiResult;
+import goormthonuniv.team_22_be.common.security.AuthUtils;
+import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class ActivityController implements ActivityApiDocs {
 
+
     private final ActivityService activityService;
+    private final ActivityApplicationRepository applicationRepository;
+
 
     @Override
     public ResponseEntity<ApiResult<?>> list(@PageableDefault(size = 10) Pageable pageable) {
@@ -71,5 +77,14 @@ public class ActivityController implements ActivityApiDocs {
     public ResponseEntity<ApiResult<Void>> cancelApply(Long id) {
         activityService.cancelApply(id);
         return ResponseEntity.ok(ApiResult.ok());
+    }
+
+    @Override
+    public PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        var page = applicationRepository.findAllByMember_Id(memberId, pageable)
+                .map(app -> ActivityResponseDto.from(app.getActivity()));
+        return PageResponse.of(page);
+
     }
 }

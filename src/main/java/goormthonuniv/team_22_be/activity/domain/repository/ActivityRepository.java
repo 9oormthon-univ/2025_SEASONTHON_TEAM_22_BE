@@ -1,6 +1,7 @@
 package goormthonuniv.team_22_be.activity.domain.repository;
 
 import goormthonuniv.team_22_be.activity.domain.model.Activity;
+import goormthonuniv.team_22_be.activity.domain.model.ActivityApplication;
 import goormthonuniv.team_22_be.activity.domain.model.ActivityType;
 import goormthonuniv.team_22_be.activity.domain.model.RecruitStatus;
 import org.springframework.data.domain.Page;
@@ -22,5 +23,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>, JpaSp
      */
     Page<Activity> findByActivityType(ActivityType type, Pageable pageable);
 
-
+    Page<ActivityApplication> findAllByMember_Id(Long memberId, Pageable pageable);
 }

@@ -4,6 +4,7 @@ import goormthonuniv.team_22_be.activity.application.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityResponseDto;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.response.ApiResult;
+import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -115,4 +116,13 @@ public interface ActivityApiDocs {
     )
     @DeleteMapping("/{id}/apply")
     ResponseEntity<ApiResult<Void>> cancelApply(@PathVariable Long id);
+
+    @Operation(
+            summary = "내가 신청한 활동",
+            description = "내가 신청한 활동 페이징",
+            security = {@SecurityRequirement(name = "BearerAuth")}
+    )
+    @GetMapping("/me/applied")
+    PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable);
+
 }
