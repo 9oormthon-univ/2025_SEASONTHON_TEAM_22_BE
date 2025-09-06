@@ -4,7 +4,7 @@ import goormthonuniv.team_22_be.post.domain.model.PostCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
-public record PostCreateDto(
+public record CreatePostRequest(
         @NotNull
         @Schema(description = "카테고리(POST/REVIEW)")
         PostCategory postCategory,

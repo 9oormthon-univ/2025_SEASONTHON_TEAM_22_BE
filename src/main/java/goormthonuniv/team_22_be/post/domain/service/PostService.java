@@ -1,28 +1,30 @@
 package goormthonuniv.team_22_be.post.domain.service;
 
-import goormthonuniv.team_22_be.post.application.dto.PostCreateDto;
-import goormthonuniv.team_22_be.post.application.dto.PostResponseDto;
-import goormthonuniv.team_22_be.post.application.dto.PostUpdateDto;
+import goormthonuniv.team_22_be.post.application.dto.CreatePostRequest;
+import goormthonuniv.team_22_be.post.application.dto.PostResponse;
+import goormthonuniv.team_22_be.post.application.dto.UpdatePostRequest;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    PageResponse<PostResponseDto> list(Pageable pageable, String category, Long activityId, Long memberId);
-    PostResponseDto get(Long id);
-    PostResponseDto update (Long postId, PostUpdateDto dto);
-    PostResponseDto create(PostCreateDto dto);
-    PageResponse<PostResponseDto> listMyLiked(Pageable pageable);
+    PageResponse<PostResponse> getPostPage(Pageable pageable, String category, Long activityId, Long memberId);
 
-    // 내가 쓴 글
-    PageResponse<PostResponseDto> listMyPosts(Pageable pageable, String category);
+    PostResponse getPost(Long postId);
 
-    // 내가 쓴 후기만
-    PageResponse<PostResponseDto> listMyReviews(Pageable pageable);
+    PostResponse updatePost(Long memberId, Long postId, UpdatePostRequest dto);
 
+    Long createPost(Long memberId, CreatePostRequest request);
 
+    void deletePost(Long memberId, Long postId);
 
-    void delete(Long id);
-    void like(Long id);
-    void unlike(Long id);
+    void like(Long memberId, Long postId);
+
+    void unlike(Long memberId, Long postId);
+
+    PageResponse<PostResponse> listMyLiked(Long memberId, Pageable pageable);
+
+    PageResponse<PostResponse> listMyPosts(Long memberId, Pageable pageable, String category);
+
+    PageResponse<PostResponse> listMyReviews(Long memberId, Pageable pageable);
 }

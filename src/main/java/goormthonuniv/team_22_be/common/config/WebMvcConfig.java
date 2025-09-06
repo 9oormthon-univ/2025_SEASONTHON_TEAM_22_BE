@@ -1,6 +1,6 @@
 package goormthonuniv.team_22_be.common.config;
 
-import goormthonuniv.team_22_be.common.resolver.AuthMemberArgumentsResolver;
+import goormthonuniv.team_22_be.common.resolver.AuthMemberArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final AuthMemberArgumentsResolver authMemberArgumentsResolver;
+    private final AuthMemberArgumentResolver authMemberArgumentsResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
