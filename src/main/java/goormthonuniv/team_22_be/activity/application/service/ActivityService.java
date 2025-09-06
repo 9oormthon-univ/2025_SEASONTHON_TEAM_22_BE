@@ -17,4 +17,6 @@ public interface ActivityService {
 
     void apply(Long activityId);
     void cancelApply(Long activityId);
+
+    PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable);
 }

@@ -1,6 +1,8 @@
 package goormthonuniv.team_22_be.activity.domain.repository;
 
 import goormthonuniv.team_22_be.activity.domain.model.ActivityApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,6 +17,6 @@ public interface ActivityApplicationRepository extends JpaRepository<ActivityApp
     Optional<ActivityApplication> findByMember_IdAndActivity_Id(Long memberId, Long activityId);
 
     /** 내 신청 목록 */
-    List<ActivityApplication> findAllByMember_Id(Long memberId);
+    Page<ActivityApplication> findAllByMember_Id(Long memberId, Pageable pageable);
 
 }

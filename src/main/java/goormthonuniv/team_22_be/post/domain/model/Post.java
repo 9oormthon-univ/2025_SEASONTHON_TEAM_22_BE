@@ -77,4 +77,5 @@ public class Post extends BaseTimeEntity {
             this.likes -= 1;
         }
     }
+
 }
