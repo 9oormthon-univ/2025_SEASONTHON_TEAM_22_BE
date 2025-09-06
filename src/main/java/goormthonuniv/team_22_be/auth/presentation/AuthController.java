@@ -19,7 +19,7 @@ public class AuthController {
 
     // 프론트가 구글 로그인 URL을 받아서 redirect 할 수 있도록 제공
     @GetMapping("/login/google")
-    public ApiResult<Map<String, String>> getGoogleLogiinUrl() {
+    public ApiResult<Map<String, String>> getGoogleLoginUrl() {
         ClientRegistration google = clientRegistrationRepository.findByRegistrationId("google");
         String url = "/oauth2/authorization/" + google.getRegistrationId();
         return ApiResult.ok(Map.of("url", url));
