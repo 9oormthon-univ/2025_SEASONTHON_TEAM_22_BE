@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
 public record CommentResponseDto(
+
         @Schema(description = "댓글 ID") Long id,
         @Schema(description = "게시글 ID") Long postId,
         @Schema(description = "작성자 회원 ID") Long memberId,
@@ -13,6 +14,7 @@ public record CommentResponseDto(
         @Schema(description = "생성일") LocalDateTime createdAt,
         @Schema(description = "수정일") LocalDateTime updatedAt
 ) {
+    
     public static CommentResponseDto from(Comment comment) {
         return new CommentResponseDto(
                 comment.getId(),

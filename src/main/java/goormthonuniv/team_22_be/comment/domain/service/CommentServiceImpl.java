@@ -1,9 +1,9 @@
 package goormthonuniv.team_22_be.comment.domain.service;
 
 import goormthonuniv.team_22_be.comment.application.CommentService;
-import goormthonuniv.team_22_be.comment.application.dto.CommentCreateDto;
+import goormthonuniv.team_22_be.comment.application.dto.CreateCommentRequest;
 import goormthonuniv.team_22_be.comment.application.dto.CommentResponseDto;
-import goormthonuniv.team_22_be.comment.application.dto.CommentUpdateDto;
+import goormthonuniv.team_22_be.comment.application.dto.UpdateCommentRequest;
 import goormthonuniv.team_22_be.comment.domain.model.Comment;
 import goormthonuniv.team_22_be.comment.domain.repository.CommentRepository;
 import goormthonuniv.team_22_be.common.exception.CustomException;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -28,26 +27,24 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<CommentResponseDto> listByPost(Long postId, Pageable pageable) {
+    public PageResponse<CommentResponseDto> getCommentsPage(Long postId, Pageable pageable) {
         var page = commentRepository.findByPost_Id(postId, pageable)
                 .map(CommentResponseDto::from);
         return PageResponse.of(page);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public PageResponse<CommentResponseDto> myComments(Pageable pageable) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public PageResponse<CommentResponseDto> getMyComments(Long memberId, Pageable pageable) {
         var page = commentRepository.findByMember_Id(memberId, pageable)
                 .map(CommentResponseDto::from);
 
         return PageResponse.of(page);
     }
 
+    @Transactional
     @Override
-    public CommentResponseDto create(Long postId, CommentCreateDto dto) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public CommentResponseDto createComment(Long memberId, Long postId, CreateCommentRequest dto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "게시글을 찾을 수 없습니다. id=" + postId));
 
@@ -60,10 +57,9 @@ public class CommentServiceImpl implements CommentService {
         return CommentResponseDto.from(commentRepository.save(comment));
     }
 
+    @Transactional
     @Override
-    public CommentResponseDto update(Long commentId, CommentUpdateDto dto) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public CommentResponseDto updateComment(Long memberId, Long commentId, UpdateCommentRequest dto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "댓글을 찾을 수 없습니다. id=" + commentId));
 
@@ -75,9 +71,9 @@ public class CommentServiceImpl implements CommentService {
         return CommentResponseDto.from(comment);
     }
 
+    @Transactional
     @Override
-    public void delete(Long commentId) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
+    public void deleteComment(Long memberId, Long commentId) {
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "댓글을 찾을 수 없습니다. id=" + commentId));

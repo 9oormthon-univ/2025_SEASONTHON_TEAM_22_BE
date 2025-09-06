@@ -103,6 +103,4 @@ public class PostController implements PostApiDocs {
         var body = postService.listMyReviews(memberId, pageable);
         return ResponseEntity.ok(ApiResult.ok(body));
     }
-
-
 }
