@@ -1,19 +1,16 @@
+// src/main/java/.../activity/application/service/ActivityServiceImpl.java
 package goormthonuniv.team_22_be.activity.application.service;
 
 import goormthonuniv.team_22_be.activity.application.dto.ActivityListItemResponse;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityResponseDto;
-import goormthonuniv.team_22_be.activity.domain.model.Activity;
-import goormthonuniv.team_22_be.activity.domain.model.ActivityApplication;
-import goormthonuniv.team_22_be.activity.domain.model.ActivityLike;
-import goormthonuniv.team_22_be.activity.domain.model.ApplicationStatus;
+import goormthonuniv.team_22_be.activity.domain.model.*;
 import goormthonuniv.team_22_be.activity.domain.repository.ActivityApplicationRepository;
 import goormthonuniv.team_22_be.activity.domain.repository.ActivityLikeRepository;
 import goormthonuniv.team_22_be.activity.domain.repository.ActivityRepository;
-import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.common.exception.CustomException;
 import goormthonuniv.team_22_be.common.exception.ErrorCode;
-import goormthonuniv.team_22_be.common.security.AuthUtils;
+import goormthonuniv.team_22_be.member.domain.model.Member;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,8 +29,6 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityApplicationRepository applicationRepository;
     private final ActivityLikeRepository likeRepository;
 
-    /* ========= 목록 / 상세 ========= */
-
     @Transactional(readOnly = true)
     @Override
     public PageResponse<?> list(Pageable pageable) {
@@ -48,8 +43,6 @@ public class ActivityServiceImpl implements ActivityService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "활동을 찾을 수 없습니다. id=" + id));
         return ActivityResponseDto.from(a);
     }
-
-    /* ========= 생성 / 수정 / 삭제 ========= */
 
     @Override
     public ActivityResponseDto create(ActivityRequestDto req) {
@@ -94,20 +87,18 @@ public class ActivityServiceImpl implements ActivityService {
     public void delete(Long id) {
         Activity a = activityRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "활동을 찾을 수 없습니다. id=" + id));
-        activityRepository.delete(a); // applications/likes 는 cascade=REMOVE 로 일괄 제거
+        activityRepository.delete(a);
     }
 
-    /* ========= 찜 ========= */
+    /* ===== 찜 ===== */
 
     @Override
-    public void like(Long activityId) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public void like(Long activityId, Long memberId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "활동을 찾을 수 없습니다. id=" + activityId));
 
         if (likeRepository.existsByMember_IdAndActivity_Id(memberId, activityId)) {
-            return; // 이미 찜한 상태면 멱등 처리
+            return; // 멱등
         }
 
         ActivityLike like = ActivityLike.builder()
@@ -123,29 +114,23 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void unlike(Long activityId) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public void unlike(Long activityId, Long memberId) {
         if (!likeRepository.existsByMember_IdAndActivity_Id(memberId, activityId)) {
             return; // 멱등
         }
-
         likeRepository.deleteByMember_IdAndActivity_Id(memberId, activityId);
     }
 
-    /* ========= 신청 ========= */
+    /* ===== 신청 ===== */
 
     @Override
-    public void apply(Long activityId) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public void apply(Long activityId, Long memberId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "활동을 찾을 수 없습니다. id=" + activityId));
 
         if (!activity.isApplyOpenNow(LocalDateTime.now())) {
             throw new CustomException(ErrorCode.BAD_REQUEST, "신청 가능 기간이 아니거나 모집 중이 아닙니다.");
         }
-
         if (applicationRepository.existsByMember_IdAndActivity_Id(memberId, activityId)) {
             throw new CustomException(ErrorCode.CONFLICT, "이미 신청한 활동입니다.");
         }
@@ -164,21 +149,17 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void cancelApply(Long activityId) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-
+    public void cancelApply(Long activityId, Long memberId) {
         ActivityApplication app = applicationRepository.findByMember_IdAndActivity_Id(memberId, activityId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "신청 내역이 없습니다."));
-
-        applicationRepository.delete(app); // soft-cancel 원하면 status 변경 로직으로 대체
+        applicationRepository.delete(app); // 필요 시 상태값으로 soft-cancel 처리
     }
 
     @Override
-    public PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
+    @Transactional(readOnly = true)
+    public PageResponse<ActivityResponseDto> listMyApplied(Long memberId, Pageable pageable) {
         var page = applicationRepository.findAllByMember_Id(memberId, pageable)
                 .map(app -> ActivityResponseDto.from(app.getActivity()));
         return PageResponse.of(page);
-
     }
 }

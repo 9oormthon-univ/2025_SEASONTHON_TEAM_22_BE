@@ -1,32 +1,26 @@
 package goormthonuniv.team_22_be.activity.presentation;
 
-import goormthonuniv.team_22_be.activity.application.service.ActivityService;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityRequestDto;
 import goormthonuniv.team_22_be.activity.application.dto.ActivityResponseDto;
-import goormthonuniv.team_22_be.activity.domain.repository.ActivityApplicationRepository;
+import goormthonuniv.team_22_be.activity.application.service.ActivityService;
 import goormthonuniv.team_22_be.activity.presentation.docs.ActivityApiDocs;
 import goormthonuniv.team_22_be.common.response.ApiResult;
-import goormthonuniv.team_22_be.common.security.AuthUtils;
 import goormthonuniv.team_22_be.shared.dto.PageResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 public class ActivityController implements ActivityApiDocs {
 
-
     private final ActivityService activityService;
-    private final ActivityApplicationRepository applicationRepository;
-
 
     @Override
-    public ResponseEntity<ApiResult<?>> list(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<ApiResult<PageResponse<?>>> list(@ParameterObject Pageable pageable) {
         var page = activityService.list(pageable);
         return ResponseEntity.ok(ApiResult.ok(page));
     }
@@ -38,13 +32,13 @@ public class ActivityController implements ActivityApiDocs {
     }
 
     @Override
-    public ResponseEntity<ApiResult<ActivityResponseDto>> create(ActivityRequestDto request) {
+    public ResponseEntity<ApiResult<ActivityResponseDto>> create(@Valid ActivityRequestDto request) {
         var dto = activityService.create(request);
         return ResponseEntity.status(201).body(ApiResult.ok(dto));
     }
 
     @Override
-    public ResponseEntity<ApiResult<ActivityResponseDto>> update(Long id, ActivityRequestDto request) {
+    public ResponseEntity<ApiResult<ActivityResponseDto>> update(Long id, @Valid ActivityRequestDto request) {
         var dto = activityService.update(id, request);
         return ResponseEntity.ok(ApiResult.ok(dto));
     }
@@ -56,35 +50,32 @@ public class ActivityController implements ActivityApiDocs {
     }
 
     @Override
-    public ResponseEntity<ApiResult<Void>> like(Long id) {
-        activityService.like(id);
+    public ResponseEntity<ApiResult<Void>> like(Long id, Long memberId) {
+        activityService.like(id, memberId);
         return ResponseEntity.ok(ApiResult.ok());
     }
 
     @Override
-    public ResponseEntity<ApiResult<Void>> unlike(Long id) {
-        activityService.unlike(id);
+    public ResponseEntity<ApiResult<Void>> unlike(Long id, Long memberId) {
+        activityService.unlike(id, memberId);
         return ResponseEntity.ok(ApiResult.ok());
     }
 
     @Override
-    public ResponseEntity<ApiResult<Void>> apply(Long id) {
-        activityService.apply(id);
+    public ResponseEntity<ApiResult<Void>> apply(Long id, Long memberId) {
+        activityService.apply(id, memberId);
         return ResponseEntity.ok(ApiResult.ok());
     }
 
     @Override
-    public ResponseEntity<ApiResult<Void>> cancelApply(Long id) {
-        activityService.cancelApply(id);
+    public ResponseEntity<ApiResult<Void>> cancelApply(Long id, Long memberId) {
+        activityService.cancelApply(id, memberId);
         return ResponseEntity.ok(ApiResult.ok());
     }
 
     @Override
-    public PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
-        var page = applicationRepository.findAllByMember_Id(memberId, pageable)
-                .map(app -> ActivityResponseDto.from(app.getActivity()));
-        return PageResponse.of(page);
-
+    public ResponseEntity<ApiResult<PageResponse<ActivityResponseDto>>> listMyApplied(Long memberId, Pageable pageable) {
+        var page = activityService.listMyApplied(memberId, pageable);
+        return ResponseEntity.ok(ApiResult.ok(page));
     }
 }

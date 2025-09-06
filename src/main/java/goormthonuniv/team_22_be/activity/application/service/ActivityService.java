@@ -12,11 +12,11 @@ public interface ActivityService {
     ActivityResponseDto update(Long id, ActivityRequestDto req);
     void delete(Long id);
 
-    void like(Long activityId);
-    void unlike(Long activityId);
+    void like(Long activityId, Long memberId);
+    void unlike(Long activityId, Long memberId);
 
-    void apply(Long activityId);
-    void cancelApply(Long activityId);
+    void apply(Long activityId, Long memberId);
+    void cancelApply(Long activityId, Long memberId);
 
-    PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable);
+    PageResponse<ActivityResponseDto> listMyApplied(Long memberId, Pageable pageable);
 }
