@@ -1,6 +1,8 @@
 package goormthonuniv.team_22_be.common.config;
 
 import goormthonuniv.team_22_be.auth.JwtAuthFilter;
+import goormthonuniv.team_22_be.common.properties.CorsProperties;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +35,9 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {})
+                .cors(cors ->
+                                cors.configurationSource(corsConfigurationSource())
+                )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
@@ -71,17 +79,14 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        var config = new org.springframework.web.cors.CorsConfiguration();
-        config.setAllowedOrigins(java.util.List.of(
-                "http://localhost:3000",
-                "https://slowmind.ngrok.app"
-        ));
-        config.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
-        config.setAllowedHeaders(java.util.List.of("*"));
-        config.setExposedHeaders(java.util.List.of("Authorization","Location"));
+        var config = new CorsConfiguration();
+        config.setAllowedOrigins(CorsProperties.ORIGINS);
+        config.setAllowedMethods(CorsProperties.METHODS);
+        config.setAllowedHeaders(CorsProperties.HEADERS);
+        config.setExposedHeaders(CorsProperties.EXPOSEDHEADERS);
         config.setAllowCredentials(true);
 
-        var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
