@@ -172,4 +172,13 @@ public class ActivityServiceImpl implements ActivityService {
 
         applicationRepository.delete(app); // soft-cancel 원하면 status 변경 로직으로 대체
     }
+
+    @Override
+    public PageResponse<ActivityResponseDto> listMyApplied(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        var page = applicationRepository.findAllByMember_Id(memberId, pageable)
+                .map(app -> ActivityResponseDto.from(app.getActivity()));
+        return PageResponse.of(page);
+
+    }
 }
