@@ -14,7 +14,7 @@ public record CommentResponseDto(
         @Schema(description = "생성일") LocalDateTime createdAt,
         @Schema(description = "수정일") LocalDateTime updatedAt
 ) {
-    
+
     public static CommentResponseDto from(Comment comment) {
         return new CommentResponseDto(
                 comment.getId(),

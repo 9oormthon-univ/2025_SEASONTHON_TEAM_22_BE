@@ -12,7 +12,8 @@ public final class CorsProperties {
 
     public static List<String> ORIGINS = List.of(
             "http://localhost:3000",
-            "https://slowmind.ngrok.app"
+            "https://slowmind.ngrok.app",
+            "https://slowmind.netlify.app"
     );
 
     public static List<String> METHODS = List.of(

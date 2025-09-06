@@ -1,12 +1,15 @@
 package goormthonuniv.team_22_be.common.config;
 
 import goormthonuniv.team_22_be.auth.JwtAuthFilter;
+import goormthonuniv.team_22_be.common.properties.CorsProperties;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -15,20 +18,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationSuccessHandler successHandler;
-
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, AuthenticationSuccessHandler successHandler) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.successHandler = successHandler;
-    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -65,22 +63,18 @@ public class SecurityConfig {
                         .loginPage("/oauth2/authorization/google")
                         .successHandler(successHandler)
                 )
+                ;
 
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var config = new org.springframework.web.cors.CorsConfiguration();
-        config.setAllowedOrigins(java.util.List.of(
-                "http://localhost:3000",
-                "https://slowmind.ngrok.app",
-                "https://slowmind.netlify.app"
-        ));
-        config.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
-        config.setAllowedHeaders(java.util.List.of("*"));
-        config.setExposedHeaders(java.util.List.of("Authorization","Location"));
+        config.setAllowedOrigins(CorsProperties.ORIGINS);
+        config.setAllowedMethods(CorsProperties.METHODS);
+        config.setAllowedHeaders(CorsProperties.HEADERS);
+        config.setExposedHeaders(CorsProperties.EXPOSEDHEADERS);
         config.setAllowCredentials(true);
 
         var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
