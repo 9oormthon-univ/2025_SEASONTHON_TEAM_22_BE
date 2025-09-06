@@ -105,4 +105,12 @@ public interface PostApiDocs {
     )
     @DeleteMapping("/{id}/like")
     ResponseEntity<ApiResult<Void>> unlike(@PathVariable Long id);
+
+    @Operation(
+            summary = "내가 좋아요 누른 게시글",
+            description = "REVIEW , POST 로 나눠서 처리",
+            security = { @SecurityRequirement(name = "BearerAuth") }
+    )
+    @GetMapping("/me/liked")
+    ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> listMyLiked(Pageable pageable);
 }

@@ -12,6 +12,12 @@ public interface PostService {
     PostResponseDto get(Long id);
     PostResponseDto update (Long postId, PostUpdateDto dto);
     PostResponseDto create(PostCreateDto dto);
+    // 내가 찜 한 게시글 목록
+    PageResponse<PostResponseDto> listMyLiked(Pageable pageable);
+    // 내가 신청한 게시글 목록
+
+    // 내가 쓴 글
+
 
     void delete(Long id);
     void like(Long id);

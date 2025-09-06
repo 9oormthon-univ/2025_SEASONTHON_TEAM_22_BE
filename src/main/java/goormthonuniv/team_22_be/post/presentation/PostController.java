@@ -63,4 +63,12 @@ public class PostController implements PostApiDocs {
         postService.unlike(id);
         return ResponseEntity.ok(ApiResult.ok());
     }
+
+    @Override
+    public ResponseEntity<ApiResult<PageResponse<PostResponseDto>>> listMyLiked(Pageable pageable) {
+        var body = postService.listMyLiked(pageable);
+        return ResponseEntity.ok(ApiResult.ok(body));
+    }
+
+
 }

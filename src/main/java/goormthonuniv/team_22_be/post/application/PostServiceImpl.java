@@ -122,6 +122,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PageResponse<PostResponseDto> listMyLiked(Pageable pageable) {
+        Long memberId = AuthUtils.currentMemberIdOrThrow();
+        return PageResponse.of(
+                postRepository.findLikedByMember(memberId, pageable)
+                        .map(PostResponseDto::from)
+        );
+
+        }
+
+    @Override
     public PostResponseDto update(Long postId, PostUpdateDto dto) {
         Long memberId = AuthUtils.currentMemberIdOrThrow();
 
