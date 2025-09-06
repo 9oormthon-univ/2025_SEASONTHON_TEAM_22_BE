@@ -95,8 +95,8 @@ public interface MemberApiDocs {
                     )
             }
     )
-    @GetMapping("/me")
-    ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo();
+    @GetMapping("/me/{memberId}")
+    ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo(@PathVariable Long memberId);
 
     @Operation(
             summary = "마이페이지 정보 수정",
@@ -122,6 +122,9 @@ public interface MemberApiDocs {
                     )
             }
     )
-    @PutMapping("/me")
-    ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(@Valid @RequestBody UpdateMyInfoRequest request);
+    @PutMapping("/me/{memberId}")
+    ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(
+            @PathVariable Long memberId,
+            @Valid @RequestBody UpdateMyInfoRequest request
+    );
 }

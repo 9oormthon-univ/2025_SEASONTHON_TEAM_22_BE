@@ -32,15 +32,13 @@ public class MemberController implements MemberApiDocs {
 
     /** 내 마이페이지 조회 */
     @Override
-    public ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo() {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
+    public ResponseEntity<ApiResult<MyPageResponse>> getMyPageInfo(Long memberId) {
         Member me = memberService.getByIdOrThrow(memberId);
         return ResponseEntity.ok(ApiResult.ok(MyPageResponse.from(me)));
     }
 
     @Override
-    public ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(UpdateMyInfoRequest request) {
-        Long memberId = AuthUtils.currentMemberIdOrThrow();
+    public ResponseEntity<ApiResult<UpdateMyInfoResponse>> updateMyInfo(Long memberId, UpdateMyInfoRequest request) {
         UpdateMyInfoResponse body = memberService.updateProfile(memberId, request);
         return ResponseEntity.ok(ApiResult.ok(body));
     }
